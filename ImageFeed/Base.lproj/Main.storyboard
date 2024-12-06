@@ -130,71 +130,10 @@
                     <view key="view" contentMode="scaleToFill" id="jQI-5i-lwK">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="UsersAvatar" translatesAutoresizingMaskIntoConstraints="NO" id="oR5-Vg-pQv">
-                                <rect key="frame" x="16" y="80" width="70" height="70"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="70" id="4xx-vs-kyU"/>
-                                    <constraint firstAttribute="width" constant="70" id="nrL-po-t84"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="@ekaterina_nov" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1S2-qz-dyn" userLabel="UsresEmail">
-                                <rect key="frame" x="16" y="207" width="382" height="16"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Hello, World!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Xq-nE-Cdg">
-                                <rect key="frame" x="16" y="244" width="382" height="16"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FtM-5i-UBz" userLabel="ExitButton">
-                                <rect key="frame" x="354" y="93" width="44" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="533-ge-Vun"/>
-                                    <constraint firstAttribute="width" constant="44" id="qKa-JZ-ZXl"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="exit"/>
-                                <connections>
-                                    <action selector="TupToExitButton:" destination="EJx-3f-z9I" eventType="touchUpInside" id="8jc-CJ-bzq"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Екатерина Новикова" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A9Z-PV-qyE" userLabel="UsresName">
-                                <rect key="frame" x="16" y="158" width="382" height="27.666666666666664"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="23"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="qxz-w1-0Z7"/>
                         <color key="backgroundColor" name="YP Black"/>
-                        <constraints>
-                            <constraint firstItem="oR5-Vg-pQv" firstAttribute="leading" secondItem="qxz-w1-0Z7" secondAttribute="leading" constant="16" id="00p-uZ-4vx"/>
-                            <constraint firstItem="A9Z-PV-qyE" firstAttribute="leading" secondItem="1S2-qz-dyn" secondAttribute="leading" id="6a1-G0-exb"/>
-                            <constraint firstItem="oR5-Vg-pQv" firstAttribute="centerY" secondItem="FtM-5i-UBz" secondAttribute="centerY" id="AUc-0V-pjO"/>
-                            <constraint firstItem="A9Z-PV-qyE" firstAttribute="trailing" secondItem="2Xq-nE-Cdg" secondAttribute="trailing" id="DSc-FV-KOz"/>
-                            <constraint firstItem="A9Z-PV-qyE" firstAttribute="leading" secondItem="2Xq-nE-Cdg" secondAttribute="leading" id="E6a-YO-VjE"/>
-                            <constraint firstItem="A9Z-PV-qyE" firstAttribute="leading" secondItem="oR5-Vg-pQv" secondAttribute="leading" id="FpQ-I7-Gfl"/>
-                            <constraint firstItem="oR5-Vg-pQv" firstAttribute="top" secondItem="qxz-w1-0Z7" secondAttribute="top" constant="32" id="Nrf-Fe-UnG"/>
-                            <constraint firstItem="A9Z-PV-qyE" firstAttribute="top" secondItem="oR5-Vg-pQv" secondAttribute="bottom" constant="8" id="Pdl-Vx-Swz"/>
-                            <constraint firstItem="2Xq-nE-Cdg" firstAttribute="top" secondItem="1S2-qz-dyn" secondAttribute="bottom" constant="8" id="Rk6-1U-pxQ"/>
-                            <constraint firstItem="A9Z-PV-qyE" firstAttribute="trailing" secondItem="qxz-w1-0Z7" secondAttribute="trailing" constant="16" id="c8V-BQ-aLn"/>
-                            <constraint firstItem="qxz-w1-0Z7" firstAttribute="trailing" secondItem="FtM-5i-UBz" secondAttribute="trailing" constant="16" id="dtV-3G-oeh"/>
-                            <constraint firstItem="1S2-qz-dyn" firstAttribute="top" secondItem="A9Z-PV-qyE" secondAttribute="bottom" constant="8" id="gQA-Fc-u6t"/>
-                            <constraint firstItem="A9Z-PV-qyE" firstAttribute="trailing" secondItem="1S2-qz-dyn" secondAttribute="trailing" id="xTz-DN-yH9"/>
-                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="tab_profile_active" id="kxg-ha-6f4"/>
-                    <connections>
-                        <outlet property="ExitButton" destination="FtM-5i-UBz" id="Oja-Yh-qfr"/>
-                        <outlet property="UsersAvatar" destination="oR5-Vg-pQv" id="VfT-PW-rZi"/>
-                        <outlet property="UsersEmail" destination="1S2-qz-dyn" id="ZEL-Ie-t5U"/>
-                        <outlet property="UsersName" destination="A9Z-PV-qyE" id="8PT-EB-4Eo"/>
-                        <outlet property="UsersText" destination="2Xq-nE-Cdg" id="IRv-dC-Z3g"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bdl-0l-8iq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -276,9 +215,7 @@
         <image name="0" width="1600" height="1059"/>
         <image name="Active" width="42" height="42"/>
         <image name="SaveButton" width="51" height="51"/>
-        <image name="UsersAvatar" width="70" height="70"/>
         <image name="back_button_white" width="24" height="24"/>
-        <image name="exit" width="44" height="44"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YP Background">
