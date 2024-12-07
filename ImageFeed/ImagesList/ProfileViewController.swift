@@ -8,14 +8,10 @@
 import Foundation
 import UIKit
 
-
-
 final class ProfileViewController: UIViewController {
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         let avatar = UIImage(named: "UsersAvatar")
         let usersAvatar = UIImageView(image: avatar)
@@ -26,7 +22,6 @@ final class ProfileViewController: UIViewController {
         usersAvatar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
         usersAvatar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
 
-        
         let usersName = UILabel()
         usersName.text = "Екатерина Новикова"
         usersName.textColor = .white
@@ -36,10 +31,6 @@ final class ProfileViewController: UIViewController {
         usersName.topAnchor.constraint(equalTo: usersAvatar.bottomAnchor, constant: 8).isActive = true
         usersName.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
         usersName.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 16).isActive = true
-    
-        
-        
-        
         
         let usersEmail = UILabel()
         usersEmail.text = "@ekaterina_nov"
@@ -78,7 +69,6 @@ final class ProfileViewController: UIViewController {
         button.heightAnchor.constraint(equalToConstant: 44).isActive = true
         button.widthAnchor.constraint(equalToConstant: 44).isActive = true
     }
-    
     
     @objc
     private func didTapButton() {
