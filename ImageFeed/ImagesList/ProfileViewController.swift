@@ -21,7 +21,7 @@ final class ProfileViewController: UIViewController {
         usersAvatar.widthAnchor.constraint(equalToConstant: 70).isActive = true
         usersAvatar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
         usersAvatar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-
+        
         let usersName = UILabel()
         usersName.text = "Екатерина Новикова"
         usersName.textColor = .white
@@ -42,8 +42,6 @@ final class ProfileViewController: UIViewController {
         usersEmail.leadingAnchor.constraint(equalTo: usersName.leadingAnchor).isActive = true
         usersEmail.trailingAnchor.constraint(equalTo: usersName.trailingAnchor).isActive = true
         
-        
-        
         let usersText = UILabel()
         usersText.text = "Hello, world!"
         usersText.textColor = .white
@@ -56,10 +54,10 @@ final class ProfileViewController: UIViewController {
         
         
         let button = UIButton.systemButton(
-                    with: UIImage(named: "exit")!,
-                    target: self,
-                    action: #selector(Self.didTapButton)
-                )
+            with: UIImage(named: "exit")!,
+            target: self,
+            action: #selector(Self.didTapButton)
+        )
         
         button.tintColor = .ypRed
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -73,5 +71,5 @@ final class ProfileViewController: UIViewController {
     @objc
     private func didTapButton() {
     }
-    }
+}
 
