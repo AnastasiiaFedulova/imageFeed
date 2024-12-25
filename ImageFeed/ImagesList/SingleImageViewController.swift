@@ -40,8 +40,12 @@ final class SingleImageViewController: UIViewController {
     }
     
     @IBAction func TupToSaveButton() {
-        guard image != nil else { return }
-        let items: [Any] = [imageView.image!]
+        guard let image = imageView.image else {
+            print("Ошибка: изображение отсутствует.")
+            return
+        }
+
+        let items: [Any] = [image]
         let avc = UIActivityViewController(activityItems: items, applicationActivities: nil)
         self.present(avc, animated: true, completion: nil)
     }
@@ -69,7 +73,7 @@ final class SingleImageViewController: UIViewController {
 
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return imageView
+         imageView
     }
     
 }

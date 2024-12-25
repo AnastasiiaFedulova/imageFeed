@@ -53,8 +53,13 @@ final class ProfileViewController: UIViewController {
         usersText.trailingAnchor.constraint(equalTo: usersEmail.trailingAnchor).isActive = true
         
         
+        guard let exitImage = UIImage(named: "exit") else {
+            print("Ошибка: изображение 'exit' не найдено")
+            return
+        }
+
         let button = UIButton.systemButton(
-            with: UIImage(named: "exit")!,
+            with: exitImage,
             target: self,
             action: #selector(Self.didTapButton)
         )

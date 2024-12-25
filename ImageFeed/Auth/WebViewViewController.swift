@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import WebKit
 
-enum WebViewConstants {
+private enum WebViewConstants {
     static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
 }
 
@@ -17,7 +17,7 @@ final class WebViewViewController: UIViewController {
     
     @IBOutlet private var webView: WKWebView!
     
-    @IBOutlet var progressView: UIProgressView!
+    @IBOutlet private var progressView: UIProgressView!
     
     var delegate: WebViewViewControllerDelegate?
     
@@ -64,6 +64,7 @@ final class WebViewViewController: UIViewController {
     
     private func loadAuthView() {
         guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
+            print("URL components not found")
             return
         }
         
@@ -75,6 +76,7 @@ final class WebViewViewController: UIViewController {
         ]
         
         guard let url = urlComponents.url else {
+            print ("Not fount URL")
             return
         }
         
@@ -85,14 +87,15 @@ final class WebViewViewController: UIViewController {
     
     private func code(from navigationAction: WKNavigationAction) -> String? {
         if
-            let url = navigationAction.request.url,                         //1
-            let urlComponents = URLComponents(string: url.absoluteString),  //2
-            urlComponents.path == "/oauth/authorize/native",                //3
-            let items = urlComponents.queryItems,                           //4
-            let codeItem = items.first(where: { $0.name == "code" })        //5
+            let url = navigationAction.request.url,
+            let urlComponents = URLComponents(string: url.absoluteString),
+            urlComponents.path == "/oauth/authorize/native",
+            let items = urlComponents.queryItems,
+            let codeItem = items.first(where: { $0.name == "code" })
         {
-            return codeItem.value                                           //6
+            return codeItem.value
         } else {
+            print("Code not found")
             return nil
         }
     }
@@ -104,14 +107,11 @@ extension WebViewViewController: WKNavigationDelegate {
         decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
-        var code = code(from: navigationAction)
-        if  code != nil { //1
+        let code = code(from: navigationAction)
+        if code != nil {
             //TODO: process code
-            //2
-            decisionHandler(.cancel) //3]
             delegate?.webViewViewController(self, didAuthenticateWithCode: code!)
-            
-           
+            decisionHandler(.cancel)
         } else {
             
             decisionHandler(.allow) //4

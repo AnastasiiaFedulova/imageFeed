@@ -4,11 +4,12 @@
 //
 //  Created by Anastasiia on 13.12.2024.
 //
+
 import UIKit
 
 final class AuthViewController: UIViewController {
     
-    private let oauth2Service = OAuth2Service()
+    private let oauth2Service = OAuth2Service.shared
     weak var delegate: AuthViewControllerDelegate?
     private let oauth2TokenStorage = OAuth2TokenStorage()
     

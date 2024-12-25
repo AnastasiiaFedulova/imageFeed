@@ -21,7 +21,7 @@
 		5577E7F02D0C5E4900029CD3 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5577E7EF2D0C5E4900029CD3 /* AuthViewController.swift */; };
 		5577E7F32D0C80ED00029CD3 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5577E7F22D0C80ED00029CD3 /* WebViewViewController.swift */; };
 		5577E7F52D1050C300029CD3 /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5577E7F42D1050C300029CD3 /* OAuth2Service.swift */; };
-		5577E7F72D11AE5E00029CD3 /* URLSession+data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5577E7F62D11AE5D00029CD3 /* URLSession+data.swift */; };
+		5577E7F72D11AE5E00029CD3 /* URLSession+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5577E7F62D11AE5D00029CD3 /* URLSession+Data.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,7 +41,7 @@
 		5577E7EF2D0C5E4900029CD3 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		5577E7F22D0C80ED00029CD3 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		5577E7F42D1050C300029CD3 /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
-		5577E7F62D11AE5D00029CD3 /* URLSession+data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+data.swift"; sourceTree = "<group>"; };
+		5577E7F62D11AE5D00029CD3 /* URLSession+Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Data.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,7 +77,7 @@
 				5577E7892CEF3BD000029CD3 /* AppDelegate.swift */,
 				5577E78B2CEF3BD000029CD3 /* SceneDelegate.swift */,
 				5577E7F42D1050C300029CD3 /* OAuth2Service.swift */,
-				5577E7F62D11AE5D00029CD3 /* URLSession+data.swift */,
+				5577E7F62D11AE5D00029CD3 /* URLSession+Data.swift */,
 				550CCEC72D131A92003A175E /* SplashViewController.swift */,
 				5577E7ED2D0AF65800029CD3 /* Constants.swift */,
 				5577E7F12D0C5ED600029CD3 /* Auth */,
@@ -192,7 +192,7 @@
 				5577E7F02D0C5E4900029CD3 /* AuthViewController.swift in Sources */,
 				5577E7EE2D0AF65800029CD3 /* Constants.swift in Sources */,
 				5577E7EC2CFE0FCC00029CD3 /* SingleImageViewController.swift in Sources */,
-				5577E7F72D11AE5E00029CD3 /* URLSession+data.swift in Sources */,
+				5577E7F72D11AE5E00029CD3 /* URLSession+Data.swift in Sources */,
 				5577E7F32D0C80ED00029CD3 /* WebViewViewController.swift in Sources */,
 				5577E7F52D1050C300029CD3 /* OAuth2Service.swift in Sources */,
 				5577E78C2CEF3BD000029CD3 /* SceneDelegate.swift in Sources */,

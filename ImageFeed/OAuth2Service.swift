@@ -14,14 +14,14 @@ struct OAuthTokenResponseBody: Decodable {
     let createdAt: Int
     
     enum CodingKeys: String, CodingKey {
-            case accessToken = "access_token"
-            case tokenType = "token_type"
-            //case score = "score"
-            case createdAt = "created_at"
-        }
+        case accessToken = "access_token"
+        case tokenType = "token_type"
+        //case score = "score"
+        case createdAt = "created_at"
+    }
 }
 
-class OAuth2TokenStorage {
+final class OAuth2TokenStorage {
     private let tokenKey = "Bearer Token"
     
     var token: String? {
@@ -34,19 +34,26 @@ class OAuth2TokenStorage {
     }
 }
     
-class OAuth2Service{
+final class OAuth2Service {
+    
+    static let shared = OAuth2Service()
+    private init() {}
+
     private let tokenStorage = OAuth2TokenStorage()
     
     func makeOAuthTokenRequest(code: String) -> URLRequest? {
-         let baseURL = URL(string: "https://unsplash.com")!
+        guard let baseURL = URL(string: "https://unsplash.com") else {
+            print ("Ошибка: не удалось создать baseURL")
+            return nil
+        }
          let url = URL(
              string: "/oauth/token"
-             + "?client_id=\(Constants.accessKey)"         // Используем знак ?, чтобы начать перечисление параметров запроса
-             + "&&client_secret=\(Constants.secretKey)"    // Используем &&, чтобы добавить дополнительные параметры
+             + "?client_id=\(Constants.accessKey)"
+             + "&&client_secret=\(Constants.secretKey)"
              + "&&redirect_uri=\(Constants.redirectURI)"
              + "&&code=\(code)"
              + "&&grant_type=authorization_code",
-             relativeTo: baseURL                           // Опираемся на основной или базовый URL, которые содержат схему и имя хоста
+             relativeTo: baseURL    
          )!
          var request = URLRequest(url: url)
          request.httpMethod = "POST"
