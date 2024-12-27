@@ -10,13 +10,11 @@ import Foundation
 struct OAuthTokenResponseBody: Decodable {
     let accessToken: String
     let tokenType: String
-    //let score: String
     let createdAt: Int
     
     enum CodingKeys: String, CodingKey {
         case accessToken = "access_token"
         case tokenType = "token_type"
-        //case score = "score"
         case createdAt = "created_at"
     }
 }
@@ -46,15 +44,17 @@ final class OAuth2Service {
             print ("Ошибка: не удалось создать baseURL")
             return nil
         }
-         let url = URL(
-             string: "/oauth/token"
-             + "?client_id=\(Constants.accessKey)"
-             + "&&client_secret=\(Constants.secretKey)"
-             + "&&redirect_uri=\(Constants.redirectURI)"
-             + "&&code=\(code)"
-             + "&&grant_type=authorization_code",
-             relativeTo: baseURL    
-         )!
+        guard let url = URL(string: "/oauth/token"
+            + "?client_id=\(Constants.accessKey)"
+            + "&client_secret=\(Constants.secretKey)"
+            + "&redirect_uri=\(Constants.redirectURI)"
+            + "&code=\(code)"
+            + "&grant_type=authorization_code",
+            relativeTo: baseURL) else {
+            assertionFailure("Не удалось создать URL")
+            return nil
+        }
+        
          var request = URLRequest(url: url)
          request.httpMethod = "POST"
          return request

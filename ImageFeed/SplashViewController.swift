@@ -19,7 +19,6 @@ final class SplashViewController: UIViewController {
         if let _ = oAuth2TokenStorage.token {
             switchToTabBarController()
         } else {
-            // Show Auth Screen
             performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
         }
     }
@@ -47,7 +46,9 @@ extension SplashViewController {
             guard
                 let navigationController = segue.destination as? UINavigationController,
                 let viewController = navigationController.viewControllers[0] as? AuthViewController
-            else { fatalError("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)") }
+            else { assertionFailure("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)")
+                return
+            }
             viewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)
@@ -56,16 +57,13 @@ extension SplashViewController {
 }
 
 extension SplashViewController: AuthViewControllerDelegate {
-    func didAuthenticate(_ vc: AuthViewController) {
-        vc.dismiss(animated: true)
-    }
-    
-    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
+    func didAuthenticate(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
             self.fetchOAuthToken(code)
-        }
     }
+    
+}
 
     private func fetchOAuthToken(_ code: String) {
         oAuth2Service.fetchOAuthToken(with: code) { [weak self] result in

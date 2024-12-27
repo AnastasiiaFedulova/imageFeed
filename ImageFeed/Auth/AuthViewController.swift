@@ -42,25 +42,22 @@ final class AuthViewController: UIViewController {
 
 }
 protocol AuthViewControllerDelegate: AnyObject {
-    func didAuthenticate(_ vc: AuthViewController)
+    func didAuthenticate(_ vc: AuthViewController,didAuthenticateWithCode code: String)
 
 }
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        vc.dismiss(animated: true) // Закрыли WebView
     
-        // Используем сервис OAuth2 для получения токена
         oauth2Service.fetchOAuthToken(with: code) { [weak self] (result: Result<String, Error>) in
                   guard let self = self else { return }
                   switch result {
                   case .success(let token):
-                      // Уведомляем делегата об успешной авторизации
+                      
                       oauth2TokenStorage.token = token
-                      self.delegate?.didAuthenticate(self)
+                      self.delegate?.didAuthenticate(self, didAuthenticateWithCode: token)
                       print("Успешно получен токен: \(token)")
                   case .failure(let error):
-                      // Логируем ошибку
                       print("Ошибка авторизации: \(error.localizedDescription)")
                   }
               }
