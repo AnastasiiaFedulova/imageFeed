@@ -12,7 +12,7 @@ final class SingleImageViewController: UIViewController {
     var image: UIImage? {
         didSet {
             guard isViewLoaded, let image else { return }
-
+            
             imageView.image = image
             imageView.frame.size = image.size
             rescaleAndCenterImageInScrollView(image: image)
@@ -40,8 +40,12 @@ final class SingleImageViewController: UIViewController {
     }
     
     @IBAction func TupToSaveButton() {
-        guard let image else { return }
-        let items: [Any] = [imageView.image!]
+        guard let image = imageView.image else {
+            print("Ошибка: изображение отсутствует.")
+            return
+        }
+
+        let items: [Any] = [image]
         let avc = UIActivityViewController(activityItems: items, applicationActivities: nil)
         self.present(avc, animated: true, completion: nil)
     }
@@ -66,10 +70,10 @@ final class SingleImageViewController: UIViewController {
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
     }
 }
-    
+
 extension SingleImageViewController: UIScrollViewDelegate {
-        func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-            return imageView
-        }
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+         imageView
+    }
     
 }
