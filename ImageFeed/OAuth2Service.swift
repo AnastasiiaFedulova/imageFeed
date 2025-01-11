@@ -32,12 +32,18 @@ final class OAuth2TokenStorage {
     }
 }
     
+enum AuthServiceError: Error {
+    case invalidRequest
+}
+
 final class OAuth2Service {
     
     static let shared = OAuth2Service()
     private init() {}
 
     private let tokenStorage = OAuth2TokenStorage()
+    private var task: URLSessionTask?
+    private var lastCode: String?
     
     func makeOAuthTokenRequest(code: String) -> URLRequest? {
         guard let baseURL = URL(string: "https://unsplash.com") else {
@@ -61,27 +67,54 @@ final class OAuth2Service {
      }
     
     func fetchOAuthToken(with code: String, completion: @escaping (Result<String, Error>) -> Void) {
-        guard let request = makeOAuthTokenRequest(code: code) else {
-                completion(.failure(NSError(domain: "OAuth2Service", code: -1, userInfo: [NSLocalizedDescriptionKey: "Ошибка создания запроса"])))
+        assert(Thread.isMainThread)
+        if task != nil {
+            if lastCode != code {
+                // Отменить текущий запрос и начать новый
+                task?.cancel()
+            } else {
+                // Если код не совпадает, ничего не делаем
+                completion(.failure(AuthServiceError.invalidRequest))
                 return
             }
+        } else {
+            if lastCode == code {
+                completion(.failure(AuthServiceError.invalidRequest))
+                return
+            }
+        }
+        lastCode = code
+        guard
+            let request = makeOAuthTokenRequest(code: code)
+        else {
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        
+        guard let request = makeOAuthTokenRequest(code: code) else {
+            completion(.failure(NSError(domain: "OAuth2Service", code: -1, userInfo: [NSLocalizedDescriptionKey: "Ошибка создания запроса"])))
+            return
+        }
 
-            URLSession.shared.data(for: request) { [weak self] result in
-                switch result {
-                case .success(let data):
-                    do {
-                        let tokenResponse = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                        self?.tokenStorage.token = tokenResponse.accessToken
-                        completion(.success(tokenResponse.accessToken))
-                    } catch {
-                        print("Ошибка декодирования ответа: \(error)")
-                        completion(.failure(error))
-                    }
-                case .failure(let error):
-                    print("Ошибка сети или запроса: \(error)")
+        let task = URLSession.shared.data(for: request) { [weak self] result in
+            switch result {
+            case .success(let data):
+                do {
+                    let tokenResponse = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
+                    self?.tokenStorage.token = tokenResponse.accessToken
+                    completion(.success(tokenResponse.accessToken))
+                } catch {
+                    print("Ошибка декодирования ответа: \(error)")
                     completion(.failure(error))
                 }
-            }.resume()
+            case .failure(let error):
+                print("Ошибка сети или запроса: \(error)")
+                completion(.failure(error))
+            }
+        }
+        
+        self.task = task
+        task.resume()
         }
     }
 
