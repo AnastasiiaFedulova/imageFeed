@@ -34,25 +34,6 @@ final class ProfileViewController: UIViewController {
         updateAvatar()                                              // 7
         
     }
-    
-        
-        //ProfileImageService.shared.avatarURL
-//        let imageUrlPath = L
-//        let imageUrl = URL(string: imageUrlPath!)!
-//        let request = URLRequest(url: imageUrl)
-//        
-//        // Так как сетевые операции URLSession — асинхронные, то есть результат от них мы получаем не сразу, необходимо передать замыкание окончания загрузки
-//        URLSession.shared.dataTask(with: request) { data, _, error in
-//            // Если данные картинки не загружены или не удалось создать картинку из полученных данных, то ничего не делаем.
-//            if let data = data,
-//                let image = UIImage(data: data) {
-//                // Помните, что все взаимодействия с UI-элементами возможны только на главном потоке!
-//                DispatchQueue.main.async {
-//                    self.view.addSubview(image)
-//                }
-//            }
-//        // Не забудьте возобновить загрузку! Все операции по загрузке изначально создаются в спящем состоянии!
-//        }.resume()
         
         private func setupUI() {
         usersAvatar.translatesAutoresizingMaskIntoConstraints = false
@@ -61,8 +42,9 @@ final class ProfileViewController: UIViewController {
         usersAvatar.widthAnchor.constraint(equalToConstant: 70).isActive = true
         usersAvatar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
         usersAvatar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-//        usersAvatar.backgroundColor = .ypBlack
-//        usersAvatar.layer.cornerRadius = 61
+        usersAvatar.clipsToBounds = true
+        usersAvatar.layer.cornerRadius = 35
+        
         
         let usersName = UILabel()
         usersName.text = "Екатерина Новикова"

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftKeychainWrapper
 
 struct OAuthTokenResponseBody: Decodable {
     let accessToken: String
@@ -19,19 +20,39 @@ struct OAuthTokenResponseBody: Decodable {
     }
 }
 
+//final class OAuth2TokenStorage {
+//    private let tokenKey = "Bearer Token"
+//    
+//    var token: String? {
+//        get {
+//            return UserDefaults.standard.string(forKey: tokenKey)
+//        }
+//        set {
+//            UserDefaults.standard.setValue(newValue, forKey: tokenKey)
+//        }
+//    }
+//}
+    
 final class OAuth2TokenStorage {
     private let tokenKey = "Bearer Token"
     
     var token: String? {
         get {
-            return UserDefaults.standard.string(forKey: tokenKey)
+           return KeychainWrapper.standard.string(forKey: tokenKey)
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: tokenKey)
+            guard let newValue = newValue else {
+                return
+            }
+            let isSuccess = KeychainWrapper.standard.set(newValue, forKey: tokenKey)
+            guard isSuccess else {
+                print("oib")
+                return
+            }
         }
     }
 }
-    
+
 enum AuthServiceError: Error {
     case invalidRequest
 }
