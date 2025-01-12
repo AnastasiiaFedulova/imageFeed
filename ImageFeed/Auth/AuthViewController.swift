@@ -41,6 +41,17 @@ final class AuthViewController: UIViewController {
            navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
            navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black")
     }
+    
+    private func showAlert() {
+         let alertController = UIAlertController(
+             title: "Что-то пошло не так(",
+             message: "Не удалось войти в систему",
+             preferredStyle: .alert
+         )
+         let okAction = UIAlertAction(title: "Ок", style: .default)
+         alertController.addAction(okAction)
+         present(alertController, animated: true)
+     }
 
 }
 protocol AuthViewControllerDelegate: AnyObject {
@@ -64,6 +75,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
                   print("Успешно получен токен: \(token)")
               case .failure(let error):
                   print("Ошибка авторизации: \(error.localizedDescription)")
+                  showAlert()
               }
           }
        // UIBlockingProgressHUD.show()

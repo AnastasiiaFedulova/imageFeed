@@ -96,23 +96,34 @@ final class OAuth2Service {
             return
         }
 
-        let task = URLSession.shared.data(for: request) { [weak self] result in
+//        let task = URLSession.shared.data(for: request) { [weak self] result in
+//            switch result {
+//            case .success(let data):
+//                do {
+//                    let tokenResponse = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
+//                    self?.tokenStorage.token = tokenResponse.accessToken
+//                    completion(.success(tokenResponse.accessToken))
+//                } catch {
+//                    print("Ошибка декодирования ответа: \(error)")
+//                    completion(.failure(error))
+//                }
+//            case .failure(let error):
+//                print("Ошибка сети или запроса: \(error)")
+//                completion(.failure(error))
+//            }
+//        }
+        
+        
+        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             switch result {
             case .success(let data):
-                do {
-                    let tokenResponse = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                    self?.tokenStorage.token = tokenResponse.accessToken
-                    completion(.success(tokenResponse.accessToken))
-                } catch {
-                    print("Ошибка декодирования ответа: \(error)")
-                    completion(.failure(error))
-                }
+                self?.tokenStorage.token = data.accessToken
+                completion(.success(data.accessToken))
             case .failure(let error):
-                print("Ошибка сети или запроса: \(error)")
+                print("[OAuth2Service]: Ошибка - \(error.localizedDescription)")
                 completion(.failure(error))
             }
         }
-        
         self.task = task
         task.resume()
         }

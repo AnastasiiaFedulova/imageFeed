@@ -51,41 +51,30 @@ final class ProfileService {
         }
         
         
-        task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
             defer { self?.task = nil }
-            
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            guard let data = data else {
-                DispatchQueue.main.async {
-                    completion(.failure(NSError(domain: "No data", code: -1, userInfo: nil)))
-                }
-                return
-            }
-            
-            do {
-                let profileResult = try JSONDecoder().decode(ProfileResult.self, from: data)
+            switch result {
+            case .success(let data):
                 let profile = Profile(
-                    username: profileResult.username,
-                    name: "\(profileResult.first_name ?? "") \(profileResult.last_name ?? "").trimmingCharacters(in: .whitespaces)",
-                    loginName: "@\(profileResult.username)",
-                    bio: profileResult.bio
+                    username: data.username,
+                    name: "\(data.first_name ?? "") \(data.last_name ?? "").trimmingCharacters(in: .whitespaces)",
+                    loginName: "@\(data.username)",
+                    bio: data.bio
                 )
                 self?.profile = profile
                 DispatchQueue.main.async {
                     completion(.success(profile))
                 }
-            } catch {
+            case .failure(let error):
+                print("[ProfileService]: Ошибка - \(error.localizedDescription)")
                 DispatchQueue.main.async {
                     completion(.failure(error))
                 }
             }
+              
         }
         
-        task?.resume()
+        task.resume()
     }
 }
 

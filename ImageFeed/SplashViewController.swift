@@ -74,7 +74,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
     private func fetchProfile(_ token: String) {
-     //   UIBlockingProgressHUD.show()
+        UIBlockingProgressHUD.show()
         profileService.fetchProfile(token: token) { [weak self] result in
           //  UIBlockingProgressHUD.dismiss()
             
@@ -95,7 +95,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     func fetchProfileImageURL(_ username: String) {
       //  UIBlockingProgressHUD.show()
         profileImageService.fetchProfileImageURL(username: username) { [weak self] result in
-           // UIBlockingProgressHUD.dismiss()
+            UIBlockingProgressHUD.dismiss()
             
             guard let self = self else { return }
             

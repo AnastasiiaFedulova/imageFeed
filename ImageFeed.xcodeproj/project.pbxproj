@@ -26,6 +26,7 @@
 		5577E7F32D0C80ED00029CD3 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5577E7F22D0C80ED00029CD3 /* WebViewViewController.swift */; };
 		5577E7F52D1050C300029CD3 /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5577E7F42D1050C300029CD3 /* OAuth2Service.swift */; };
 		5577E7F72D11AE5E00029CD3 /* URLSession+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5577E7F62D11AE5D00029CD3 /* URLSession+Data.swift */; };
+		558ACFA62D33F049004B6665 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 558ACFA52D33F049004B6665 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				558ACFA62D33F049004B6665 /* Kingfisher in Frameworks */,
 				550CCECC2D229275003A175E /* ProgressHUD in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -139,6 +141,7 @@
 			name = ImageFeed;
 			packageProductDependencies = (
 				550CCECB2D229275003A175E /* ProgressHUD */,
+				558ACFA52D33F049004B6665 /* Kingfisher */,
 			);
 			productName = ImageFeed;
 			productReference = 5577E7862CEF3BD000029CD3 /* ImageFeed.app */;
@@ -474,6 +477,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 550CCECA2D2291F7003A175E /* XCRemoteSwiftPackageReference "ProgressHUD" */;
 			productName = ProgressHUD;
+		};
+		558ACFA52D33F049004B6665 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 550CCED32D318833003A175E /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
