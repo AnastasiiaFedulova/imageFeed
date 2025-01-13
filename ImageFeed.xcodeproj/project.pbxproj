@@ -28,6 +28,7 @@
 		5577E7F72D11AE5E00029CD3 /* URLSession+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5577E7F62D11AE5D00029CD3 /* URLSession+Data.swift */; };
 		558ACFA62D33F049004B6665 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 558ACFA52D33F049004B6665 /* Kingfisher */; };
 		558ACFA92D340512004B6665 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 558ACFA82D340512004B6665 /* SwiftKeychainWrapper */; };
+		558ACFAB2D3408C2004B6665 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558ACFAA2D3408C2004B6665 /* TabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,7 @@
 		5577E7F22D0C80ED00029CD3 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		5577E7F42D1050C300029CD3 /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
 		5577E7F62D11AE5D00029CD3 /* URLSession+Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Data.swift"; sourceTree = "<group>"; };
+		558ACFAA2D3408C2004B6665 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +94,7 @@
 				5577E78B2CEF3BD000029CD3 /* SceneDelegate.swift */,
 				550CCECF2D2D5AE2003A175E /* ProfileService.swift */,
 				5577E7F42D1050C300029CD3 /* OAuth2Service.swift */,
+				558ACFAA2D3408C2004B6665 /* TabBarController.swift */,
 				5577E7F62D11AE5D00029CD3 /* URLSession+Data.swift */,
 				550CCEC72D131A92003A175E /* SplashViewController.swift */,
 				5577E7ED2D0AF65800029CD3 /* Constants.swift */,
@@ -210,6 +213,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5577E78E2CEF3BD000029CD3 /* ImagesListViewController.swift in Sources */,
+				558ACFAB2D3408C2004B6665 /* TabBarController.swift in Sources */,
 				5577E7E72CF659E400029CD3 /* ImagesListCell.swift in Sources */,
 				5577E7EA2CFB4E0700029CD3 /* ProfileViewController.swift in Sources */,
 				550CCEC82D131A92003A175E /* SplashViewController.swift in Sources */,
