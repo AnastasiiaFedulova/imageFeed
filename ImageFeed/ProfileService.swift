@@ -20,7 +20,7 @@ final class ProfileService {
         let first_name: String?
         let last_name: String?
         let bio: String?
-                
+        
     }
     struct Profile {
         let username: String
@@ -31,21 +31,21 @@ final class ProfileService {
     }
     
     private func createRequest(endpoint: String, token: String) -> URLRequest? {
-            guard let url = URL(string: "https://api.unsplash.com/\(endpoint)") else {
-                return nil
-            }
-            var request = URLRequest(url: url)
-            
-            request.httpMethod = "GET"
-
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-            
-            return request
+        guard let url = URL(string: "https://api.unsplash.com/\(endpoint)") else {
+            return nil
         }
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = "GET"
+        
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        return request
+    }
     
     func fetchProfile(token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         guard task == nil else { return }
-            
+        
         guard let request = createRequest(endpoint: "me", token: token) else {
             return
         }
@@ -71,10 +71,11 @@ final class ProfileService {
                     completion(.failure(error))
                 }
             }
-              
+            
         }
         
         task.resume()
     }
 }
+
 

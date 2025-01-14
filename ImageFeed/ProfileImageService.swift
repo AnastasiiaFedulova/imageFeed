@@ -58,6 +58,6 @@ final class ProfileImageService {
         }
         currentTask.resume()
     }
-
+    
 }
 

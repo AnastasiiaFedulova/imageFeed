@@ -44,7 +44,7 @@ final class SingleImageViewController: UIViewController {
             print("Ошибка: изображение отсутствует.")
             return
         }
-
+        
         let items: [Any] = [image]
         let avc = UIActivityViewController(activityItems: items, applicationActivities: nil)
         self.present(avc, animated: true, completion: nil)
@@ -73,7 +73,7 @@ final class SingleImageViewController: UIViewController {
 
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-         imageView
+        imageView
     }
     
 }

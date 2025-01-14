@@ -40,7 +40,6 @@ extension URLSession {
         })
         
         return task
-        
     }
     
     func objectTask<T: Decodable>(

@@ -37,26 +37,26 @@ final class AuthViewController: UIViewController {
     }
     private func configureBackButton() {
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button")
-           navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "nav_back_button")
-           navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-           navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black")
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "nav_back_button")
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black")
     }
     
     private func showAlert() {
-         let alertController = UIAlertController(
-             title: "Что-то пошло не так(",
-             message: "Не удалось войти в систему",
-             preferredStyle: .alert
-         )
-         let okAction = UIAlertAction(title: "Ок", style: .default)
-         alertController.addAction(okAction)
-         present(alertController, animated: true)
-     }
-
+        let alertController = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Не удалось войти в систему",
+            preferredStyle: .alert
+        )
+        let okAction = UIAlertAction(title: "Ок", style: .default)
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
+    }
+    
 }
 protocol AuthViewControllerDelegate: AnyObject {
     func didAuthenticate(_ vc: AuthViewController,didAuthenticateWithCode code: String)
-
+    
 }
 
 extension AuthViewController: WebViewViewControllerDelegate {
@@ -65,24 +65,23 @@ extension AuthViewController: WebViewViewControllerDelegate {
         oauth2Service.fetchOAuthToken(with: code) { [weak self] (result: Result<String, Error>) in defer {
             UIBlockingProgressHUD.dismiss()
         }
-              guard let self = self else { return }
-              
-              switch result {
-              case .success(let token):
-                  
-                  oauth2TokenStorage.token = token
-                  self.delegate?.didAuthenticate(self, didAuthenticateWithCode: token)
-                  print("Успешно получен токен: \(token)")
-              case .failure(let error):
-                  print("Ошибка авторизации: \(error.localizedDescription)")
-                  showAlert()
-              }
-          }
-       // UIBlockingProgressHUD.show()
-          }
-
-      func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
-          dismiss(animated: true)
-      }
-  }
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let token):
+                
+                oauth2TokenStorage.token = token
+                self.delegate?.didAuthenticate(self, didAuthenticateWithCode: token)
+                print("Успешно получен токен: \(token)")
+            case .failure(let error):
+                print("Ошибка авторизации: \(error.localizedDescription)")
+                showAlert()
+            }
+        }
+    }
+    
+    func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
+        dismiss(animated: true)
+    }
+}
 

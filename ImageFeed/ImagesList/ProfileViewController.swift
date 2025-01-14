@@ -21,21 +21,20 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        profileImageServiceObserver = NotificationCenter.default    // 2
+        profileImageServiceObserver = NotificationCenter.default
             .addObserver(
-                forName: ProfileImageService.didChangeNotification, // 3
-                object: nil,                                        // 4
-                queue: .main                                        // 5
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
             ) { [weak self] _ in
                 guard let self = self else { return }
-                self.updateAvatar()                                 // 6
+                self.updateAvatar()
             }
         setupUI()
-        updateAvatar()                                              // 7
-        
+        updateAvatar()
     }
-        
-        private func setupUI() {
+    
+    private func setupUI() {
         usersAvatar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(usersAvatar)
         usersAvatar.heightAnchor.constraint(equalToConstant: 70).isActive = true
@@ -99,19 +98,16 @@ final class ProfileViewController: UIViewController {
         usersName.text = profileServise.profile?.name
         usersEmail.text = profileServise.profile?.loginName
         usersText.text = profileServise.profile?.bio
-   
-    
-            }
+    }
     
     @objc
     private func didTapButton() {
     }
     
     private func updateAvatar() {
-            guard let profileImageURL = ProfileImageService.shared.avatarURL,
-                  let url = URL(string: profileImageURL) else { return }
+        guard let profileImageURL = ProfileImageService.shared.avatarURL,
+              let url = URL(string: profileImageURL) else { return }
         let processor = RoundCornerImageProcessor(cornerRadius: 61)
         usersAvatar.kf.setImage(with: url, placeholder: UIImage(named: "UsersAvatar"), options: [.processor(processor)])
-        }
-   
+    }
 }
