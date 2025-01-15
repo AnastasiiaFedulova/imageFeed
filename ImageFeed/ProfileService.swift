@@ -57,7 +57,7 @@ final class ProfileService {
             case .success(let data):
                 let profile = Profile(
                     username: data.username,
-                    name: "\(data.first_name ?? "") \(data.last_name ?? "").trimmingCharacters(in: .whitespaces)",
+                    name: "\(data.first_name ?? "") \(data.last_name ?? "")",
                     loginName: "@\(data.username)",
                     bio: data.bio
                 )

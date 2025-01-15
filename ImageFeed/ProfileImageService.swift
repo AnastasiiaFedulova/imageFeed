@@ -32,8 +32,11 @@ final class ProfileImageService {
             completion(.failure(NSError(domain: "ProfileImageService", code: 401, userInfo: [NSLocalizedDescriptionKey: "Unauthorized"])))
             return
         }
-        
-        var request = URLRequest(url: URL(string: "https://api.unsplash.com/users/\(username)")!)
+        guard let url = URL(string: "https://api.unsplash.com/users/\(username)") else {
+            completion(.failure(NSError(domain: "ProfileImageService", code: 500, userInfo: [:])))
+            return
+        }
+        var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         

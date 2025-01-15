@@ -76,29 +76,17 @@ final class OAuth2Service {
     
     func fetchOAuthToken(with code: String, completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
-        if task != nil {
-            if lastCode != code {
-                task?.cancel()
-            } else {
-                completion(.failure(AuthServiceError.invalidRequest))
-                return
-            }
-        } else {
-            if lastCode == code {
-                completion(.failure(AuthServiceError.invalidRequest))
-                return
-            }
-        }
-        lastCode = code
-        guard
-            let request = makeOAuthTokenRequest(code: code)
-        else {
+        
+        guard lastCode != code else {
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
         
+        task?.cancel()
+        lastCode = code
+        
         guard let request = makeOAuthTokenRequest(code: code) else {
-            completion(.failure(NSError(domain: "OAuth2Service", code: -1, userInfo: [NSLocalizedDescriptionKey: "Ошибка создания запроса"])))
+            completion(.failure(AuthServiceError.invalidRequest))
             return
         }
         
@@ -112,8 +100,8 @@ final class OAuth2Service {
                 completion(.failure(error))
             }
         }
+        
         self.task = task
         task.resume()
     }
 }
-
