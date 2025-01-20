@@ -7,20 +7,44 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
+    private let profileServise = ProfileService.shared
+    private let token = OAuth2TokenStorage().token
+    
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
+    private let usersAvatar = UIImageView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .ypBlack
         
-        let avatar = UIImage(named: "UsersAvatar")
-        let usersAvatar = UIImageView(image: avatar)
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        setupUI()
+        updateAvatar()
+    }
+    
+    private func setupUI() {
         usersAvatar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(usersAvatar)
         usersAvatar.heightAnchor.constraint(equalToConstant: 70).isActive = true
         usersAvatar.widthAnchor.constraint(equalToConstant: 70).isActive = true
         usersAvatar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
         usersAvatar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
+        usersAvatar.clipsToBounds = true
+        usersAvatar.layer.cornerRadius = 35
+        
         
         let usersName = UILabel()
         usersName.text = "Екатерина Новикова"
@@ -57,7 +81,7 @@ final class ProfileViewController: UIViewController {
             print("Ошибка: изображение 'exit' не найдено")
             return
         }
-
+        
         let button = UIButton.systemButton(
             with: exitImage,
             target: self,
@@ -71,10 +95,20 @@ final class ProfileViewController: UIViewController {
         button.centerYAnchor.constraint(equalTo: usersAvatar.centerYAnchor).isActive = true
         button.heightAnchor.constraint(equalToConstant: 44).isActive = true
         button.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        
+        usersName.text = profileServise.profile?.name
+        usersEmail.text = profileServise.profile?.loginName
+        usersText.text = profileServise.profile?.bio
     }
     
     @objc
     private func didTapButton() {
     }
+    
+    private func updateAvatar() {
+        guard let profileImageURL = ProfileImageService.shared.avatarURL,
+              let url = URL(string: profileImageURL) else { return }
+        let processor = RoundCornerImageProcessor(cornerRadius: 61)
+        usersAvatar.kf.setImage(with: url, placeholder: UIImage(named: "UsersAvatar"), options: [.processor(processor)])
+    }
 }
-
