@@ -32,6 +32,7 @@
 		558ACFAD2D3EB61A004B6665 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558ACFAC2D3EB61A004B6665 /* AlertPresenter.swift */; };
 		558ACFAF2D3EB9F2004B6665 /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558ACFAE2D3EB9F2004B6665 /* AlertModel.swift */; };
 		558ACFB12D3EBB5B004B6665 /* ViewControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558ACFB02D3EBB5B004B6665 /* ViewControllerProtocol.swift */; };
+		558ACFB32D425C79004B6665 /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558ACFB22D425C79004B6665 /* ImagesListService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,7 @@
 		558ACFAC2D3EB61A004B6665 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		558ACFAE2D3EB9F2004B6665 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		558ACFB02D3EBB5B004B6665 /* ViewControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerProtocol.swift; sourceTree = "<group>"; };
+		558ACFB22D425C79004B6665 /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				5577E7F42D1050C300029CD3 /* OAuth2Service.swift */,
 				558ACFAA2D3408C2004B6665 /* TabBarController.swift */,
 				5577E7F62D11AE5D00029CD3 /* URLSession+Data.swift */,
+				558ACFB22D425C79004B6665 /* ImagesListService.swift */,
 				550CCEC72D131A92003A175E /* SplashViewController.swift */,
 				5577E7ED2D0AF65800029CD3 /* Constants.swift */,
 				558ACFAE2D3EB9F2004B6665 /* AlertModel.swift */,
@@ -226,6 +229,7 @@
 				5577E7E72CF659E400029CD3 /* ImagesListCell.swift in Sources */,
 				5577E7EA2CFB4E0700029CD3 /* ProfileViewController.swift in Sources */,
 				550CCEC82D131A92003A175E /* SplashViewController.swift in Sources */,
+				558ACFB32D425C79004B6665 /* ImagesListService.swift in Sources */,
 				5577E78A2CEF3BD000029CD3 /* AppDelegate.swift in Sources */,
 				5577E7F02D0C5E4900029CD3 /* AuthViewController.swift in Sources */,
 				550CCECE2D2C30CA003A175E /* UIBlockingProgressHUD.swift in Sources */,
