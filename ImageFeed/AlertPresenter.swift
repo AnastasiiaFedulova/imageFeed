@@ -15,7 +15,7 @@ weak var delegate: ViewControllerProtocol?
                                       message: alertData.message,
                                       preferredStyle: .alert)
         
-        let action = UIAlertAction(title: alertData.buttonText, style: .default) { _ in (alertData.completion ?? nil)
+        let action = UIAlertAction(title: alertData.buttonText, style: .default) { _ in (alertData.completion?())
         }
         
         alert.addAction(action)

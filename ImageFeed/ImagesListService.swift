@@ -46,7 +46,6 @@ final class ImagesListService {
     
     static var lastLoadedPage: Int = 0
     
-    
     func fetchPhotosNextPage() -> Int {
 
         ImagesListService.lastLoadedPage += 1
@@ -71,7 +70,6 @@ final class ImagesListService {
         
         let isoFormatter = ISO8601DateFormatter()
     
-        
         let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
             defer { self?.task = nil }
             switch result {
@@ -84,7 +82,6 @@ final class ImagesListService {
                     }
                     
                     let photo = Photo(id: photoResult.id, size: CGSize(width: Double(photoResult.width), height: Double(photoResult.height)), createdAt: date, welcomeDescription: photoResult.description, thumbImageURL: photoResult.urls.thumb, largeImageURL: photoResult.urls.full, isLiked: photoResult.liked_by_user
-                    
                     )
                     self?.photos.append(photo)
                     NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: nil)
@@ -99,7 +96,6 @@ final class ImagesListService {
                     completion(.failure(error))
                 }
             }
-            
         }
         task.resume()
     }
