@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SplashViewController: UIViewController {
+final class SplashViewController: UIViewController, ViewControllerProtocol {
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     
     private let oAuth2Service = OAuth2Service.shared
@@ -20,6 +20,9 @@ final class SplashViewController: UIViewController {
     
     weak var delegate: AuthViewControllerDelegate?
     
+    private var alertPresenter: AlertPresenter?
+
+    
     private let splashImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -30,6 +33,9 @@ final class SplashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        alertPresenter = AlertPresenter()
+        alertPresenter?.setup(delegate: self)
+
     }
     
     private func setupUI() {
@@ -42,7 +48,7 @@ final class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+      
         if let token = oAuth2TokenStorage.token {
             fetchProfile(token)
         } else {
@@ -91,7 +97,8 @@ extension SplashViewController: AuthViewControllerDelegate {
             case .success(let profile):
                 fetchProfileImageURL(profile.username)
             case .failure:
-                self.showErrorAlert(message: "Не удалось получить профиль.")
+                let alertModel = AlertModel(title: "Ошибка", message: "Не удалось получить профиль.", buttonText: "OK", completion: nil)
+                self.alertPresenter?.alert(alertData: alertModel)
                 break
             }
         }
@@ -108,17 +115,20 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.switchToTabBarController()
                 break
             case .failure:
-                self.showErrorAlert(message: "Не удалось получить профиль.")
+                let alertModel = AlertModel(title: "Ошибка", message: "Не удалось получить профиль.", buttonText: "OK", completion: nil)
+                self.alertPresenter?.alert(alertData: alertModel)
                 break
             }
         }
     }
-    private func showErrorAlert(message: String) {
-        let alertController = UIAlertController(title: "Ошибка", message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alertController.addAction(okAction)
-        present(alertController, animated: true, completion: nil)
-    }
+
+    
+//    private func showErrorAlert(message: String) {
+//        let alertController = UIAlertController(title: "Ошибка", message: message, preferredStyle: .alert)
+//        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+//        alertController.addAction(okAction)
+//        present(alertController, animated: true, completion: nil)
+//    }
     
     private func fetchOAuthToken(_ code: String) {
         oAuth2Service.fetchOAuthToken(with: code) { [weak self] result in
