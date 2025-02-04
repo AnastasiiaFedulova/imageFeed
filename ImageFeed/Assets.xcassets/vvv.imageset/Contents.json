@@ -6,12 +6,12 @@
       "scale" : "1x"
     },
     {
-      "filename" : "scribble.variable 1.png",
+      "filename" : "scribble.variable@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "scribble.variable 2.png",
+      "filename" : "scribble.variable@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

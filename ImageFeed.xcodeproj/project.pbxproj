@@ -34,6 +34,7 @@
 		558ACFB12D3EBB5B004B6665 /* ViewControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558ACFB02D3EBB5B004B6665 /* ViewControllerProtocol.swift */; };
 		558ACFB32D425C79004B6665 /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558ACFB22D425C79004B6665 /* ImagesListService.swift */; };
 		558ACFD02D452DA3004B6665 /* ImagesListServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558ACFC82D452BFD004B6665 /* ImagesListServiceTests.swift */; };
+		558ACFD32D4E80BD004B6665 /* ProfileLogoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558ACFD22D4E80BD004B6665 /* ProfileLogoutService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,7 @@
 		558ACFB22D425C79004B6665 /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
 		558ACFC62D452BFD004B6665 /* ImageFeedTestss.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedTestss.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		558ACFC82D452BFD004B6665 /* ImagesListServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListServiceTests.swift; sourceTree = "<group>"; };
+		558ACFD22D4E80BD004B6665 /* ProfileLogoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLogoutService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +125,7 @@
 				550CCECD2D2C30CA003A175E /* UIBlockingProgressHUD.swift */,
 				5577E78B2CEF3BD000029CD3 /* SceneDelegate.swift */,
 				550CCECF2D2D5AE2003A175E /* ProfileService.swift */,
+				558ACFD22D4E80BD004B6665 /* ProfileLogoutService.swift */,
 				5577E7F42D1050C300029CD3 /* OAuth2Service.swift */,
 				558ACFAA2D3408C2004B6665 /* TabBarController.swift */,
 				5577E7F62D11AE5D00029CD3 /* URLSession+Data.swift */,
@@ -295,6 +298,7 @@
 				550CCECE2D2C30CA003A175E /* UIBlockingProgressHUD.swift in Sources */,
 				5577E7EE2D0AF65800029CD3 /* Constants.swift in Sources */,
 				5577E7EC2CFE0FCC00029CD3 /* SingleImageViewController.swift in Sources */,
+				558ACFD32D4E80BD004B6665 /* ProfileLogoutService.swift in Sources */,
 				5577E7F72D11AE5E00029CD3 /* URLSession+Data.swift in Sources */,
 				558ACFAD2D3EB61A004B6665 /* AlertPresenter.swift in Sources */,
 				5577E7F32D0C80ED00029CD3 /* WebViewViewController.swift in Sources */,

@@ -9,6 +9,10 @@ import Foundation
 import UIKit
 
 final class SingleImageViewController: UIViewController {
+
+    
+    var imageURL: URL?
+    
     var image: UIImage? {
         didSet {
             guard isViewLoaded, let image else { return }
@@ -23,10 +27,18 @@ final class SingleImageViewController: UIViewController {
     
     @IBOutlet var SaveButton: UIButton!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        scrollView.delegate = self
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
+        
+        
+        if let url = imageURL {
+            imageView.kf.setImage(with: url)
+        }
         
         guard let image else { return }
         imageView.image = image
@@ -50,7 +62,7 @@ final class SingleImageViewController: UIViewController {
         self.present(avc, animated: true, completion: nil)
     }
     
-    @IBOutlet var scrollView: UIScrollView!
+    @IBOutlet private var scrollView: UIScrollView!
     
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
@@ -70,10 +82,8 @@ final class SingleImageViewController: UIViewController {
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
     }
 }
-
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         imageView
     }
-    
 }
