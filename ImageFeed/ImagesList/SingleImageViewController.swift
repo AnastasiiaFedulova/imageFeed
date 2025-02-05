@@ -7,6 +7,8 @@
 
 import Foundation
 import UIKit
+import ProgressHUD
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
 
@@ -20,6 +22,8 @@ final class SingleImageViewController: UIViewController {
             imageView.image = image
             imageView.frame.size = image.size
             rescaleAndCenterImageInScrollView(image: image)
+            
+            
         }
     }
     
@@ -35,10 +39,31 @@ final class SingleImageViewController: UIViewController {
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
         
-        
         if let url = imageURL {
-            imageView.kf.setImage(with: url)
+            let placeholderImage = UIImage(named: "vvv")
+            imageView.image = placeholderImage
+            imageView.contentMode = .center
+            
+            
+            
+            imageView.kf.setImage(
+                with: url,
+                placeholder: placeholderImage,
+                options: nil,
+                progressBlock: nil,
+                completionHandler: { [weak self] result in
+                    DispatchQueue.main.async {
+                        switch result {
+                        case .success(let value):
+                            self?.image = value.image
+                        case .failure:
+                            print("error")
+                        }
+                    }
+                }
+            )
         }
+        
         
         guard let image else { return }
         imageView.image = image

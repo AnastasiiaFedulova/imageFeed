@@ -101,8 +101,7 @@ final class ImagesListViewController: UIViewController, ViewControllerProtocol {
                 return
             }
 
-                   // Загружаем изображение в контроллер, но только если imageView уже загружен
-                   viewController.imageURL = url // Передаем URL в переменную контроллера
+                   viewController.imageURL = url
                } else {
                    super.prepare(for: segue, sender: sender)
                }
@@ -141,7 +140,6 @@ extension ImagesListViewController: ImagesListCellDelegate {
                 switch result {
                 case .success():
                     let newPhoto = !photo.isLiked
-                //self?.photos[indexPath.row] = photo
                     cell.setIsLiked(isLiked: newPhoto)
                     self?.photos[indexPath.row].isLiked = newPhoto
                     UIBlockingProgressHUD.dismiss()
