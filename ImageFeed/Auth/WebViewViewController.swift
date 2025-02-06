@@ -5,7 +5,6 @@
 //  Created by Anastasiia on 13.12.2024.
 //
 
-import Foundation
 import UIKit
 import WebKit
 

@@ -5,9 +5,7 @@
 //  Created by Anastasiia on 26.11.2024.
 //
 
-import Foundation
 import UIKit
-
 
 protocol ImagesListCellDelegate: AnyObject {
     func imageListCellDidTapLike(_ cell: ImagesListCell)
@@ -32,28 +30,17 @@ final class ImagesListCell: UITableViewCell {
     
     var delegate: ImagesListCellDelegate?
     
-   
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//    
     @IBAction private func likeButtonClicked() {
         delegate?.imageListCellDidTapLike(self)
     }
     
     override func prepareForReuse() {
-            super.prepareForReuse()
-            
-            // Отменяем загрузку, чтобы избежать багов при переиспользовании ячеек
+        super.prepareForReuse()
+        
         cellImage.kf.cancelDownloadTask()
-        }
+    }
     
-    
-     func setIsLiked(isLiked: Bool) {
-        if isLiked == false {
-            likeButton.setImage(UIImage(named: "Active"), for: .normal)
-        } else if isLiked == true {
-            likeButton.setImage(UIImage(named: "NoActive"), for: .normal)
-        }
+    func setIsLiked(isLiked: Bool) {
+        likeButton.setImage(UIImage(named: isLiked ? "Active" : "NoActive"), for: .normal)
     }
 }

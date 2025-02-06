@@ -11,17 +11,17 @@ final class SplashViewController: UIViewController, ViewControllerProtocol {
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     
     private let oAuth2Service = OAuth2Service.shared
-    private let oAuth2TokenStorage = OAuth2TokenStorage()
+    private let oAuth2TokenStorage = OAuth2TokenStorage.shared
     
     private let profileService = ProfileService.shared
-    private let storage = OAuth2TokenStorage()
+    private let storage = OAuth2TokenStorage.shared
     
     private let profileImageService = ImageFeed.ProfileImageService.shared
     
     weak var delegate: AuthViewControllerDelegate?
     
     private var alertPresenter: AlertPresenter?
-
+    
     
     private let splashImageView: UIImageView = {
         let imageView = UIImageView()
@@ -35,7 +35,7 @@ final class SplashViewController: UIViewController, ViewControllerProtocol {
         setupUI()
         alertPresenter = AlertPresenter()
         alertPresenter?.setup(delegate: self)
-
+        
     }
     
     private func setupUI() {
@@ -48,7 +48,7 @@ final class SplashViewController: UIViewController, ViewControllerProtocol {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-      
+        
         if let token = oAuth2TokenStorage.token {
             fetchProfile(token)
         } else {
@@ -121,14 +121,6 @@ extension SplashViewController: AuthViewControllerDelegate {
             }
         }
     }
-
-    
-//    private func showErrorAlert(message: String) {
-//        let alertController = UIAlertController(title: "Ошибка", message: message, preferredStyle: .alert)
-//        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-//        alertController.addAction(okAction)
-//        present(alertController, animated: true, completion: nil)
-//    }
     
     private func fetchOAuthToken(_ code: String) {
         oAuth2Service.fetchOAuthToken(with: code) { [weak self] result in

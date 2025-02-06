@@ -7,7 +7,7 @@
 
 import UIKit
 import Kingfisher
-
+import ProgressHUD
 
 final class ImagesListViewController: UIViewController, ViewControllerProtocol {
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
@@ -17,7 +17,6 @@ final class ImagesListViewController: UIViewController, ViewControllerProtocol {
     var photos: [Photo] = []
     
     var imageListService = ImagesListService.shared
-    
     
     private var alertPresenter: AlertPresenter?
     
@@ -31,29 +30,32 @@ final class ImagesListViewController: UIViewController, ViewControllerProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         
         alertPresenter = AlertPresenter()
         alertPresenter?.setup(delegate: self)
         
-        NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: nil)
+        
+        NotificationCenter.default
+            .addObserver(
+                forName: ImagesListService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                
+                updateTableViewAnimated()
+            }
         fetchImages()
-    
     }
     
-    
-    func fetchImages() -> Void {
+    private func fetchImages() {
         imageListService.fetchPhotosNextPage() { [weak self] result in
             switch result {
             case .success(let photos):
-                self?.photos = photos
-                DispatchQueue.main.async {
-                    self?.tableView.reloadData()
-                }
-
+                return
             case .failure(_):
-                let alertModel = AlertModel(title: "Ошибка", message: "Не удалось загрузить изображение.", buttonText: "OK", completion: nil)
+                let alertModel = AlertModel(title: "Ошибка", message: "Не удалось загрузить изображения.", buttonText: "OK", completion: nil)
                 self?.alertPresenter?.alert(alertData: alertModel)
             }
         }
@@ -90,22 +92,22 @@ final class ImagesListViewController: UIViewController, ViewControllerProtocol {
             }
             
             guard indexPath.row < photos.count else {
-                        assertionFailure("Index out of bounds for photos array")
-                        return
-                    }
+                assertionFailure("Index out of bounds for photos array")
+                return
+            }
             
             let photo = photos[indexPath.row]
             
-            guard !photo.thumbImageURL.isEmpty, let url = URL(string: photo.thumbImageURL) else {
+            guard !photo.largeImageURL.isEmpty, let url = URL(string: photo.largeImageURL) else {
                 assertionFailure("Invalid or empty URL for image")
                 return
             }
-
-                   viewController.imageURL = url
-               } else {
-                   super.prepare(for: segue, sender: sender)
-               }
-           }
+            
+            viewController.imageURL = url
+        } else {
+            super.prepare(for: segue, sender: sender)
+        }
+    }
 }
 
 extension ImagesListViewController: UITableViewDataSource {
@@ -124,9 +126,8 @@ extension ImagesListViewController: UITableViewDataSource {
         
         return imageListCell
     }
-
+    
 }
-
 
 extension ImagesListViewController: ImagesListCellDelegate {
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
@@ -134,88 +135,83 @@ extension ImagesListViewController: ImagesListCellDelegate {
         let photo = photos[indexPath.row]
         
         UIBlockingProgressHUD.show()
+        let isPhotoLiked = !photo.isLiked
         
-        imageListService.changeLike(photoId: photo.id, isLike: photo.isLiked) { [weak self] result in
-            DispatchQueue.main.async { [self] in
+        imageListService.changeLike(photoId: photo.id, isLike: isPhotoLiked) { [weak self] result in
+            DispatchQueue.main.async {
                 switch result {
-                case .success():
-                    let newPhoto = !photo.isLiked
-                    cell.setIsLiked(isLiked: newPhoto)
-                    self?.photos[indexPath.row].isLiked = newPhoto
+                case .success:
+                    guard let self = self else { return }
+                    
+                    if let index = self.photos.firstIndex(where: { $0.id == photo.id }) {
+                        self.photos[index].isLiked = isPhotoLiked
+                    }
+                    
+                    cell.setIsLiked(isLiked: isPhotoLiked)
                     UIBlockingProgressHUD.dismiss()
-                case .failure(_):
-                    UIBlockingProgressHUD.dismiss()
+                case .failure:
                     print("Error")
+                    UIBlockingProgressHUD.dismiss()
                 }
             }
         }
     }
 }
-    extension ImagesListViewController {
-        func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-            let photo = photos[indexPath.row]
+
+extension ImagesListViewController {
+    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
+        let photo = photos[indexPath.row]
+        
+        if let url = URL(string: photo.largeImageURL) {
             
-            if let url = URL(string: photo.largeImageURL) {
-                
-                cell.cellImage.kf.indicatorType = .activity
-                let placeholder = UIImage(named: "vvv")
-                cell.cellImage.contentMode = .center
-                
-                
-                cell.cellImage.kf.setImage(
-                    with: url,
-                    placeholder: placeholder,
-                    options: nil,
-                    progressBlock: nil
-                ) { [weak self] result in
-                    switch result {
-                    case .success:
-                        
-                        DispatchQueue.main.async {
-                            cell.cellImage.contentMode = .scaleAspectFill
-                            self?.tableView.beginUpdates()
-                            self?.tableView.endUpdates()
-                        }
-                    case .failure(let error):
-                        print("Error loading image: \(error)")
+            cell.cellImage.kf.indicatorType = .activity
+            let placeholder = UIImage(named: "vvv")
+            cell.cellImage.contentMode = .center
+            
+            cell.cellImage.kf.setImage(
+                with: url,
+                placeholder: placeholder,
+                options: nil,
+                progressBlock: nil
+            ) { [weak self] result in
+                switch result {
+                case .success:
+                    
+                    DispatchQueue.main.async {
+                        cell.cellImage.contentMode = .scaleAspectFill
+                        self?.tableView.beginUpdates()
+                        self?.tableView.endUpdates()
                     }
+                case .failure(let error):
+                    print("Error loading image: \(error)")
                 }
-                
-                cell.dateLabel.text = dateFormatter.string(from: Date())
-                
-                let isLiked = indexPath.row % 2 == 0
-                let likeImage = isLiked ? UIImage(named: "Active") : UIImage(named: "NoActive")
-                cell.likeButton.setImage(likeImage, for: .normal)
             }
+            
+            cell.dateLabel.text = dateFormatter.string(from: Date())
+            
+            let likeImage = UIImage(named: photo.isLiked ? "Active" : "NoActive")
+            cell.likeButton.setImage(likeImage, for: .normal)
         }
     }
-    extension ImagesListViewController: UITableViewDelegate {
-        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
-        }
+}
+extension ImagesListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let photo = photos[indexPath.row]
+        _ = URL(string: photo.largeImageURL)
         
-        func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            let photo = photos[indexPath.row]
-            _ = URL(string: photo.largeImageURL)
-            
-            
-            //        guard let image = UIImage(named: photosName[indexPath.row]) else {
-            //            return 0
-            //        }
-            //        let photo = photos[indexPath.row]
-            //               guard let url = URL(string: photo.largeImageURL), let image = try? UIImage(data: Data(contentsOf: url)) else {
-            //                   return 0
-            //
-            //               }
-            
-            let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
-            let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
-            let imageWidth = photo.size.width
-            let scale = imageViewWidth / imageWidth
-            let cellHeight = photo.size.height * scale + imageInsets.top + imageInsets.bottom
-            return cellHeight
-            
-        }
+        
+        let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
+        let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
+        let imageWidth = photo.size.width
+        let scale = imageViewWidth / imageWidth
+        let cellHeight = photo.size.height * scale + imageInsets.top + imageInsets.bottom
+        return cellHeight
         
     }
+    
+}
 

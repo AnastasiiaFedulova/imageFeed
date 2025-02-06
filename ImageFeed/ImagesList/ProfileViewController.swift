@@ -5,7 +5,6 @@
 //  Created by Anastasiia on 30.11.2024.
 //
 
-import Foundation
 import UIKit
 import Kingfisher
 
@@ -15,7 +14,7 @@ final class ProfileViewController: UIViewController, ViewControllerProtocol {
     
     
     private let profileServise = ProfileService.shared
-    private let token = OAuth2TokenStorage().token
+    private let token = OAuth2TokenStorage.shared.token
     
     private var profileImageServiceObserver: NSObjectProtocol?
     
@@ -23,7 +22,6 @@ final class ProfileViewController: UIViewController, ViewControllerProtocol {
     
     private var alertPresenter: AlertPresenter?
     
-//     var animationLayers = Set<CALayer>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,9 +37,8 @@ final class ProfileViewController: UIViewController, ViewControllerProtocol {
                 queue: .main
             ) { [weak self] _ in
                 guard let self = self else { return }
-//                self.removeGradient()
                 self.updateAvatar()
-
+                
             }
         setupUI()
         updateAvatar()
@@ -112,61 +109,31 @@ final class ProfileViewController: UIViewController, ViewControllerProtocol {
         usersEmail.text = profileServise.profile?.loginName
         usersText.text = profileServise.profile?.bio
         
-//        addGradient(to: usersAvatar, size: CGSize(width: 70, height: 70), cornerRadius: 35)
-//        addGradient(to: usersName, size: CGSize(width: 270, height: 23),cornerRadius: 10)
-//        addGradient(to: usersEmail, size: CGSize(width: 140, height: 18),cornerRadius: 9)
-//        addGradient(to: usersText, size: CGSize(width: 80, height: 18),cornerRadius: 9)
         
     }
     
     @objc
-        private func didTapButton() {
-            let alert = UIAlertController(title: "Пока, пока!", message: "Уверены что хотите выйти?", preferredStyle: .alert)
+    private func didTapButton() {
+        let alert = UIAlertController(title: "Пока, пока!", message: "Уверены что хотите выйти?", preferredStyle: .alert)
+        
+        let yesAction = UIAlertAction(title: "Да", style: .default) { _ in
+            self.profileLogoutService.logout()
             
-            let yesAction = UIAlertAction(title: "Да", style: .default) { _ in
-                self.profileLogoutService.logout()
-                
-                guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
-                let authViewController = UIStoryboard(name: "Main", bundle: .main)
-                    .instantiateViewController(withIdentifier: "AuthViewController")
-                window.rootViewController = authViewController
-                
-                UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {}, completion: nil)
-            }
+            guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+            let authViewController = UIStoryboard(name: "Main", bundle: .main)
+                .instantiateViewController(withIdentifier: "AuthViewController")
+            window.rootViewController = authViewController
             
-            let noAction = UIAlertAction(title: "Нет", style: .default, handler: nil)
-            
-            alert.addAction(yesAction)
-            alert.addAction(noAction)
-            
-            present(alert, animated: true, completion: nil)
+            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {}, completion: nil)
         }
-    
-//    private func addGradient(to view: UIView, size: CGSize, cornerRadius: CGFloat = 0) {
-//        let gradient = CAGradientLayer()
-//        gradient.frame = CGRect(origin: .zero, size: size)
-//        gradient.locations = [0, 0.1, 0.3]
-//        gradient.colors = [
-//            UIColor(red: 0.682, green: 0.686, blue: 0.706, alpha: 1).cgColor,
-//               UIColor(red: 0.531, green: 0.533, blue: 0.553, alpha: 1).cgColor,
-//               UIColor(red: 0.431, green: 0.433, blue: 0.453, alpha: 1).cgColor
-//        ]
-//        gradient.startPoint = CGPoint(x: 0, y: 0.5)
-//        gradient.endPoint = CGPoint(x: 1, y: 0.5)
-//        gradient.cornerRadius = cornerRadius
-//        gradient.masksToBounds = true
-//        animationLayers.insert(gradient)
-//        view.layer.addSublayer(gradient)
-//
-//        
-//        let gradientChangeAnimation = CABasicAnimation(keyPath: "locations")
-//        gradientChangeAnimation.duration = 1.0
-//        gradientChangeAnimation.repeatCount = .infinity
-//        gradientChangeAnimation.fromValue = [0, 0.1, 0.3]
-//        gradientChangeAnimation.toValue = [0, 0.8, 1]
-//        gradient.add(gradientChangeAnimation, forKey: "locationsChange")
-//    }
-    
+        
+        let noAction = UIAlertAction(title: "Нет", style: .default, handler: nil)
+        
+        alert.addAction(yesAction)
+        alert.addAction(noAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
     
     private func updateAvatar() {
         guard let profileImageURL = ProfileImageService.shared.avatarURL,
@@ -174,10 +141,5 @@ final class ProfileViewController: UIViewController, ViewControllerProtocol {
         let processor = RoundCornerImageProcessor(cornerRadius: 61)
         usersAvatar.kf.setImage(with: url, placeholder: UIImage(named: "UsersAvatar"), options: [.processor(processor)])
     }
-    
-//    private func removeGradient() {
-//           animationLayers.forEach { $0.removeFromSuperlayer() }
-//           animationLayers.removeAll()
-//       }
 }
 

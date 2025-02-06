@@ -5,13 +5,11 @@
 //  Created by Anastasiia on 02.12.2024.
 //
 
-import Foundation
 import UIKit
 import ProgressHUD
 import Kingfisher
 
 final class SingleImageViewController: UIViewController {
-
     
     var imageURL: URL?
     
@@ -22,15 +20,12 @@ final class SingleImageViewController: UIViewController {
             imageView.image = image
             imageView.frame.size = image.size
             rescaleAndCenterImageInScrollView(image: image)
-            
-            
         }
     }
     
     @IBOutlet var imageView: UIImageView!
     
     @IBOutlet var SaveButton: UIButton!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,10 +35,10 @@ final class SingleImageViewController: UIViewController {
         scrollView.maximumZoomScale = 1.25
         
         if let url = imageURL {
+            UIBlockingProgressHUD.show()
             let placeholderImage = UIImage(named: "vvv")
             imageView.image = placeholderImage
             imageView.contentMode = .center
-            
             
             
             imageView.kf.setImage(
@@ -55,6 +50,7 @@ final class SingleImageViewController: UIViewController {
                     DispatchQueue.main.async {
                         switch result {
                         case .success(let value):
+                            UIBlockingProgressHUD.dismiss()
                             self?.image = value.image
                         case .failure:
                             print("error")
@@ -64,13 +60,11 @@ final class SingleImageViewController: UIViewController {
             )
         }
         
-        
         guard let image else { return }
         imageView.image = image
         imageView.frame.size = image.size
         rescaleAndCenterImageInScrollView(image: image)
     }
-    
     
     @IBAction func backButton() {
         dismiss(animated: true, completion: nil)
@@ -88,7 +82,6 @@ final class SingleImageViewController: UIViewController {
     }
     
     @IBOutlet private var scrollView: UIScrollView!
-    
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
         let minZoomScale = scrollView.minimumZoomScale

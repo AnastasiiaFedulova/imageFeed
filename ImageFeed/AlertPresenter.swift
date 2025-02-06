@@ -5,11 +5,10 @@
 //  Created by Anastasiia on 20.01.2025.
 //
 
-import Foundation
 import UIKit
 
-class AlertPresenter {
-weak var delegate: ViewControllerProtocol?
+final class AlertPresenter {
+    weak var delegate: ViewControllerProtocol?
     func alert (alertData: AlertModel) {
         let alert = UIAlertController(title: alertData.title,
                                       message: alertData.message,
@@ -25,4 +24,4 @@ weak var delegate: ViewControllerProtocol?
         self.delegate = delegate
     }
 }
-    
+

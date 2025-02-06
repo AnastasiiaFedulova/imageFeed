@@ -13,7 +13,7 @@ final class AuthViewController: UIViewController, ViewControllerProtocol {
     
     private let oauth2Service = OAuth2Service.shared
     weak var delegate: AuthViewControllerDelegate?
-    private let oauth2TokenStorage = OAuth2TokenStorage()
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     
     private var alertPresenter: AlertPresenter?
     
@@ -25,9 +25,9 @@ final class AuthViewController: UIViewController, ViewControllerProtocol {
         configureBackButton()
         alertPresenter = AlertPresenter()
         alertPresenter?.setup(delegate: self)
-      
+        
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == identifier {
             guard
@@ -47,18 +47,6 @@ final class AuthViewController: UIViewController, ViewControllerProtocol {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black")
     }
-    
-    
-    //    private func showAlert() {
-    //        let alertController = UIAlertController(
-    //            title: "Что-то пошло не так(",
-    //            message: "Не удалось войти в систему",
-    //            preferredStyle: .alert
-    //        )
-    //        let okAction = UIAlertAction(title: "Ок", style: .default)
-    //        alertController.addAction(okAction)
-    //        present(alertController, animated: true)
-    //    }
     
 }
 protocol AuthViewControllerDelegate: AnyObject {
@@ -81,9 +69,8 @@ extension AuthViewController: WebViewViewControllerDelegate {
                 print("Успешно получен токен: \(token)")
             case .failure(let error):
                 print("Ошибка авторизации: \(error.localizedDescription)")
-               let alertModel = AlertModel(title: "Что-то пошло не так(", message: "Не удалось войти в систему", buttonText: "OK", completion: nil)
+                let alertModel = AlertModel(title: "Что-то пошло не так(", message: "Не удалось войти в систему", buttonText: "OK", completion: nil)
                 self.alertPresenter?.alert(alertData: alertModel)
-               // showAlert()
             }
         }
     }

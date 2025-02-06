@@ -71,7 +71,6 @@ final class ProfileService {
                     completion(.failure(error))
                 }
             }
-            
         }
         
         task.resume()
