@@ -5,22 +5,30 @@
 //  Created by Anastasiia on 30.11.2024.
 //
 
-import Foundation
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController, ViewControllerProtocol {
     
-    private let profileServise = ProfileService.shared
-    private let token = OAuth2TokenStorage().token
+    private let profileLogoutService = ProfileLogoutService.shared
+    
+    
+    private let profileService = ProfileService.shared
+    private let token = OAuth2TokenStorage.shared.token
     
     private var profileImageServiceObserver: NSObjectProtocol?
     
     private let usersAvatar = UIImageView()
     
+    private var alertPresenter: AlertPresenter?
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBlack
+        
+        alertPresenter = AlertPresenter()
+        alertPresenter?.setup(delegate: self)
         
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(
@@ -30,6 +38,7 @@ final class ProfileViewController: UIViewController {
             ) { [weak self] _ in
                 guard let self = self else { return }
                 self.updateAvatar()
+                
             }
         setupUI()
         updateAvatar()
@@ -96,13 +105,34 @@ final class ProfileViewController: UIViewController {
         button.heightAnchor.constraint(equalToConstant: 44).isActive = true
         button.widthAnchor.constraint(equalToConstant: 44).isActive = true
         
-        usersName.text = profileServise.profile?.name
-        usersEmail.text = profileServise.profile?.loginName
-        usersText.text = profileServise.profile?.bio
+        usersName.text = profileService.profile?.name
+        usersEmail.text = profileService.profile?.loginName
+        usersText.text = profileService.profile?.bio
+        
+        
     }
     
     @objc
     private func didTapButton() {
+        let alert = UIAlertController(title: "Пока, пока!", message: "Уверены что хотите выйти?", preferredStyle: .alert)
+        
+        let yesAction = UIAlertAction(title: "Да", style: .default) { _ in
+            self.profileLogoutService.logout()
+            
+            guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+            let authViewController = UIStoryboard(name: "Main", bundle: .main)
+                .instantiateViewController(withIdentifier: "AuthViewController")
+            window.rootViewController = authViewController
+            
+            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {}, completion: nil)
+        }
+        
+        let noAction = UIAlertAction(title: "Нет", style: .default, handler: nil)
+        
+        alert.addAction(yesAction)
+        alert.addAction(noAction)
+        
+        present(alert, animated: true, completion: nil)
     }
     
     private func updateAvatar() {
@@ -112,3 +142,4 @@ final class ProfileViewController: UIViewController {
         usersAvatar.kf.setImage(with: url, placeholder: UIImage(named: "UsersAvatar"), options: [.processor(processor)])
     }
 }
+

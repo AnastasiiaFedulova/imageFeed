@@ -21,6 +21,10 @@ struct OAuthTokenResponseBody: Decodable {
 }
 
 final class OAuth2TokenStorage {
+    static let shared = OAuth2TokenStorage()
+    
+    private init() {}
+    
     private let tokenKey = "Bearer Token"
     
     var token: String? {
@@ -38,6 +42,10 @@ final class OAuth2TokenStorage {
             }
         }
     }
+    
+    func removeToken() {
+        KeychainWrapper.standard.removeObject(forKey: tokenKey)
+    }
 }
 
 enum AuthServiceError: Error {
@@ -49,7 +57,7 @@ final class OAuth2Service {
     static let shared = OAuth2Service()
     private init() {}
     
-    private let tokenStorage = OAuth2TokenStorage()
+    private let tokenStorage = OAuth2TokenStorage.shared
     private var task: URLSessionTask?
     private var lastCode: String?
     

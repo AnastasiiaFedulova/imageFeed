@@ -9,11 +9,13 @@ import UIKit
 import ProgressHUD
 
 
-final class AuthViewController: UIViewController {
+final class AuthViewController: UIViewController, ViewControllerProtocol {
     
     private let oauth2Service = OAuth2Service.shared
     weak var delegate: AuthViewControllerDelegate?
-    private let oauth2TokenStorage = OAuth2TokenStorage()
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
+    
+    private var alertPresenter: AlertPresenter?
     
     let identifier = "ShowWebView"
     
@@ -21,7 +23,11 @@ final class AuthViewController: UIViewController {
         super.viewDidLoad()
         
         configureBackButton()
+        alertPresenter = AlertPresenter()
+        alertPresenter?.setup(delegate: self)
+        
     }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == identifier {
             guard
@@ -42,17 +48,6 @@ final class AuthViewController: UIViewController {
         navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black")
     }
     
-    private func showAlert() {
-        let alertController = UIAlertController(
-            title: "Что-то пошло не так(",
-            message: "Не удалось войти в систему",
-            preferredStyle: .alert
-        )
-        let okAction = UIAlertAction(title: "Ок", style: .default)
-        alertController.addAction(okAction)
-        present(alertController, animated: true)
-    }
-    
 }
 protocol AuthViewControllerDelegate: AnyObject {
     func didAuthenticate(_ vc: AuthViewController,didAuthenticateWithCode code: String)
@@ -69,13 +64,13 @@ extension AuthViewController: WebViewViewControllerDelegate {
             
             switch result {
             case .success(let token):
-                
                 oauth2TokenStorage.token = token
                 self.delegate?.didAuthenticate(self, didAuthenticateWithCode: token)
                 print("Успешно получен токен: \(token)")
             case .failure(let error):
                 print("Ошибка авторизации: \(error.localizedDescription)")
-                showAlert()
+                let alertModel = AlertModel(title: "Что-то пошло не так(", message: "Не удалось войти в систему", buttonText: "OK", completion: nil)
+                self.alertPresenter?.alert(alertData: alertModel)
             }
         }
     }

@@ -71,10 +71,13 @@ final class ProfileService {
                     completion(.failure(error))
                 }
             }
-            
         }
         
         task.resume()
+    }
+    
+    func deletProfil() {
+        profile = nil
     }
 }
 

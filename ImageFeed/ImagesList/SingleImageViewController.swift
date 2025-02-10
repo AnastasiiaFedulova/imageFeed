@@ -5,10 +5,14 @@
 //  Created by Anastasiia on 02.12.2024.
 //
 
-import Foundation
 import UIKit
+import ProgressHUD
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
+    
+    var imageURL: URL?
+    
     var image: UIImage? {
         didSet {
             guard isViewLoaded, let image else { return }
@@ -25,15 +29,42 @@ final class SingleImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        scrollView.delegate = self
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
+        
+        if let url = imageURL {
+            UIBlockingProgressHUD.show()
+            let placeholderImage = UIImage(named: "vvv")
+            imageView.image = placeholderImage
+            imageView.contentMode = .center
+            
+            
+            imageView.kf.setImage(
+                with: url,
+                placeholder: placeholderImage,
+                options: nil,
+                progressBlock: nil,
+                completionHandler: { [weak self] result in
+                    DispatchQueue.main.async {
+                        switch result {
+                        case .success(let value):
+                            UIBlockingProgressHUD.dismiss()
+                            self?.image = value.image
+                        case .failure:
+                            print("error")
+                        }
+                    }
+                }
+            )
+        }
         
         guard let image else { return }
         imageView.image = image
         imageView.frame.size = image.size
         rescaleAndCenterImageInScrollView(image: image)
     }
-    
     
     @IBAction func backButton() {
         dismiss(animated: true, completion: nil)
@@ -50,8 +81,7 @@ final class SingleImageViewController: UIViewController {
         self.present(avc, animated: true, completion: nil)
     }
     
-    @IBOutlet var scrollView: UIScrollView!
-    
+    @IBOutlet private var scrollView: UIScrollView!
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
         let minZoomScale = scrollView.minimumZoomScale
@@ -70,10 +100,8 @@ final class SingleImageViewController: UIViewController {
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
     }
 }
-
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         imageView
     }
-    
 }

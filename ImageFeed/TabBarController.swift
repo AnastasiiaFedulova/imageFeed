@@ -5,7 +5,6 @@
 //  Created by Anastasiia on 12.01.2025.
 //
 
-import Foundation
 import UIKit
 
 final class TabBarController: UITabBarController {

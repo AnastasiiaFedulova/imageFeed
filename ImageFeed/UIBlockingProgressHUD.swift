@@ -5,7 +5,6 @@
 //  Created by Anastasiia on 06.01.2025.
 //
 
-import Foundation
 import UIKit
 import ProgressHUD
 
@@ -20,6 +19,6 @@ final class UIBlockingProgressHUD {
     static func dismiss() {
         window?.isUserInteractionEnabled = true
         ProgressHUD.dismiss()
-    } 
-    
+    }
 }
+

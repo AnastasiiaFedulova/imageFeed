@@ -65,6 +65,9 @@
                                                     </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="Active"/>
+                                                    <connections>
+                                                        <action selector="likeButtonClicked" destination="tNI-WN-p7l" eventType="touchUpInside" id="20h-ox-ncf"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="27 августа 2022" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Bi-wJ-uj3" userLabel="Date">
                                                     <rect key="frame" x="24" y="190" width="101.5" height="16"/>
@@ -224,7 +227,7 @@
         <!--Single Image View Controller-->
         <scene sceneID="d5C-xh-Xvt">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="as5-eA-4ny" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SingleImageViewController" modalPresentationStyle="fullScreen" id="as5-eA-4ny" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="07d-Hi-FeK">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -239,9 +242,6 @@
                                 </subviews>
                                 <viewLayoutGuide key="contentLayoutGuide" id="kuV-Pn-uKq"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="zbe-4Y-5YC"/>
-                                <connections>
-                                    <outlet property="delegate" destination="as5-eA-4ny" id="x8B-74-Zzk"/>
-                                </connections>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OUe-eb-lGe" userLabel="BackButton">
                                 <rect key="frame" x="8" y="8" width="48" height="48"/>
