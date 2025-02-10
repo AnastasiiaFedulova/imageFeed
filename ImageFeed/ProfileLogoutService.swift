@@ -12,7 +12,7 @@ final class ProfileLogoutService {
     
     static let shared = ProfileLogoutService()
     private init() {}
-    var oAuth2TokenStorage = OAuth2TokenStorage.shared
+    private var oAuth2TokenStorage = OAuth2TokenStorage.shared
     func logout() {
         
         ProfileService.shared.deletProfil()

@@ -13,7 +13,7 @@ final class ProfileViewController: UIViewController, ViewControllerProtocol {
     private let profileLogoutService = ProfileLogoutService.shared
     
     
-    private let profileServise = ProfileService.shared
+    private let profileService = ProfileService.shared
     private let token = OAuth2TokenStorage.shared.token
     
     private var profileImageServiceObserver: NSObjectProtocol?
@@ -105,9 +105,9 @@ final class ProfileViewController: UIViewController, ViewControllerProtocol {
         button.heightAnchor.constraint(equalToConstant: 44).isActive = true
         button.widthAnchor.constraint(equalToConstant: 44).isActive = true
         
-        usersName.text = profileServise.profile?.name
-        usersEmail.text = profileServise.profile?.loginName
-        usersText.text = profileServise.profile?.bio
+        usersName.text = profileService.profile?.name
+        usersEmail.text = profileService.profile?.loginName
+        usersText.text = profileService.profile?.bio
         
         
     }
