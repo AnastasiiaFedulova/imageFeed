@@ -12,6 +12,7 @@
 		550CCECE2D2C30CA003A175E /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550CCECD2D2C30CA003A175E /* UIBlockingProgressHUD.swift */; };
 		550CCED02D2D5AE2003A175E /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550CCECF2D2D5AE2003A175E /* ProfileService.swift */; };
 		550CCED22D2EEAE2003A175E /* ProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550CCED12D2EEAE2003A175E /* ProfileImageService.swift */; };
+		5529F7A92D5CD55900AC4324 /* WebViewViewControllerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5529F7A82D5CD55900AC4324 /* WebViewViewControllerSpy.swift */; };
 		5577E78A2CEF3BD000029CD3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5577E7892CEF3BD000029CD3 /* AppDelegate.swift */; };
 		5577E78C2CEF3BD000029CD3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5577E78B2CEF3BD000029CD3 /* SceneDelegate.swift */; };
 		5577E78E2CEF3BD000029CD3 /* ImagesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5577E78D2CEF3BD000029CD3 /* ImagesListViewController.swift */; };
@@ -66,6 +67,7 @@
 		550CCECD2D2C30CA003A175E /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 		550CCECF2D2D5AE2003A175E /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		550CCED12D2EEAE2003A175E /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
+		5529F7A82D5CD55900AC4324 /* WebViewViewControllerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewControllerSpy.swift; sourceTree = "<group>"; };
 		5577E7862CEF3BD000029CD3 /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5577E7892CEF3BD000029CD3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5577E78B2CEF3BD000029CD3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				5589D5212D5A329D004567CF /* AuthHelper.swift */,
 				5577E7ED2D0AF65800029CD3 /* AuthConfiguration.swift */,
 				5589D5302D5B8B2D004567CF /* WebViewPresenterSpy.swift */,
+				5529F7A82D5CD55900AC4324 /* WebViewViewControllerSpy.swift */,
 				558ACFAE2D3EB9F2004B6665 /* AlertModel.swift */,
 				5589D5182D5517F6004567CF /* Structs */,
 				558ACFB02D3EBB5B004B6665 /* ViewControllerProtocol.swift */,
@@ -373,6 +376,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5589D51E2D55188D004567CF /* UrlsResult.swift in Sources */,
+				5529F7A92D5CD55900AC4324 /* WebViewViewControllerSpy.swift in Sources */,
 				5577E78E2CEF3BD000029CD3 /* ImagesListViewController.swift in Sources */,
 				558ACFAB2D3408C2004B6665 /* TabBarController.swift in Sources */,
 				5577E7E72CF659E400029CD3 /* ImagesListCell.swift in Sources */,
