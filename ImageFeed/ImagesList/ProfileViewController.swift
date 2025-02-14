@@ -12,7 +12,6 @@ final class ProfileViewController: UIViewController, ViewControllerProtocol {
     
     private let profileLogoutService = ProfileLogoutService.shared
     
-    
     private let profileService = ProfileService.shared
     private let token = OAuth2TokenStorage.shared.token
     

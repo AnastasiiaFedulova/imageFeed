@@ -52,7 +52,7 @@ final class ImagesListViewController: UIViewController, ViewControllerProtocol {
     private func fetchImages() {
         imageListService.fetchPhotosNextPage() { [weak self] result in
             switch result {
-            case .success(let photos):
+            case .success(_):
                 return
             case .failure(_):
                 let alertModel = AlertModel(title: "Ошибка", message: "Не удалось загрузить изображения.", buttonText: "OK", completion: nil)
