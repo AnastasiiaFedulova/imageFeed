@@ -1,49 +1,42 @@
 //
-//  ProfileViewController.swift
+//  ProfileViewPresenter.swift
 //  ImageFeed
 //
-//  Created by Anastasiia on 30.11.2024.
+//  Created by Anastasiia on 15.02.2025.
 //
 
+import Foundation
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController, ViewControllerProtocol {
+public protocol ProfileViewPresenterProtocol {
+    var viewPresenter: ProfileViewControllerProtocol? { get set }
+    func setupUI()
+    func updateAvatar()
+    func changeLabels()
+}
+
+final class ProfileViewPresenter: ProfileViewPresenterProtocol {
     
-    private let profileLogoutService = ProfileLogoutService.shared
-    
-    private let profileService = ProfileService.shared
-    private let token = OAuth2TokenStorage.shared.token
-    
-    private var profileImageServiceObserver: NSObjectProtocol?
+    weak var viewPresenter: ProfileViewControllerProtocol?
     
     private let usersAvatar = UIImageView()
+    private let usersName = UILabel()
+    private let usersEmail = UILabel()
+    private let usersText = UILabel()
+    private let profileService = ProfileService.shared
     
-    private var alertPresenter: AlertPresenter?
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .ypBlack
-        
-        alertPresenter = AlertPresenter()
-        alertPresenter?.setup(delegate: self)
-        
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateAvatar()
-                
-            }
-        setupUI()
-        updateAvatar()
+    func setupUI() {
+        setupAvatar()
+        setupUsersName()
+        setupUsersEmail()
+        setupUsersText()
+        setupButton()
     }
     
-    private func setupUI() {
+    func setupAvatar() {
+        guard let view = viewPresenter?.view else { return }
+        
         usersAvatar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(usersAvatar)
         usersAvatar.heightAnchor.constraint(equalToConstant: 70).isActive = true
@@ -52,10 +45,11 @@ final class ProfileViewController: UIViewController, ViewControllerProtocol {
         usersAvatar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         usersAvatar.clipsToBounds = true
         usersAvatar.layer.cornerRadius = 35
+    }
+    
+    func setupUsersName() {
+        guard let view = viewPresenter?.view else { return }
         
-        
-        let usersName = UILabel()
-        usersName.text = "Екатерина Новикова"
         usersName.textColor = .white
         usersName.font = .boldSystemFont(ofSize: 23)
         usersName.translatesAutoresizingMaskIntoConstraints = false
@@ -63,9 +57,11 @@ final class ProfileViewController: UIViewController, ViewControllerProtocol {
         usersName.topAnchor.constraint(equalTo: usersAvatar.bottomAnchor, constant: 8).isActive = true
         usersName.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
         usersName.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 16).isActive = true
+    }
+    
+    func setupUsersEmail() {
+        guard let view = viewPresenter?.view else { return }
         
-        let usersEmail = UILabel()
-        usersEmail.text = "@ekaterina_nov"
         usersEmail.textColor = .ypGray
         usersEmail.font = .systemFont(ofSize: 13)
         usersEmail.translatesAutoresizingMaskIntoConstraints = false
@@ -73,9 +69,11 @@ final class ProfileViewController: UIViewController, ViewControllerProtocol {
         usersEmail.topAnchor.constraint(equalTo: usersName.bottomAnchor, constant: 8).isActive = true
         usersEmail.leadingAnchor.constraint(equalTo: usersName.leadingAnchor).isActive = true
         usersEmail.trailingAnchor.constraint(equalTo: usersName.trailingAnchor).isActive = true
+    }
+    
+    func setupUsersText() {
+        guard let view = viewPresenter?.view else { return }
         
-        let usersText = UILabel()
-        usersText.text = "Hello, world!"
         usersText.textColor = .white
         usersText.font = .systemFont(ofSize: 13)
         usersText.translatesAutoresizingMaskIntoConstraints = false
@@ -83,19 +81,20 @@ final class ProfileViewController: UIViewController, ViewControllerProtocol {
         usersText.topAnchor.constraint(equalTo: usersEmail.bottomAnchor, constant: 8).isActive = true
         usersText.leadingAnchor.constraint(equalTo: usersEmail.leadingAnchor).isActive = true
         usersText.trailingAnchor.constraint(equalTo: usersEmail.trailingAnchor).isActive = true
-        
-        
+    }
+    
+    func setupButton() {
         guard let exitImage = UIImage(named: "exit") else {
             print("Ошибка: изображение 'exit' не найдено")
             return
         }
+        guard let view = viewPresenter?.view else { return }
         
-        let button = UIButton.systemButton(
-            with: exitImage,
-            target: self,
-            action: #selector(Self.didTapButton)
-        )
-        
+        let button = viewPresenter?.getButton(exitImage: exitImage)
+        guard let button = button else {
+            print("Ошибка: изображение 'exitButton' не создан")
+            return
+        }
         button.tintColor = .ypRed
         button.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(button)
@@ -103,42 +102,18 @@ final class ProfileViewController: UIViewController, ViewControllerProtocol {
         button.centerYAnchor.constraint(equalTo: usersAvatar.centerYAnchor).isActive = true
         button.heightAnchor.constraint(equalToConstant: 44).isActive = true
         button.widthAnchor.constraint(equalToConstant: 44).isActive = true
-        
-        usersName.text = profileService.profile?.name
-        usersEmail.text = profileService.profile?.loginName
-        usersText.text = profileService.profile?.bio
-        
-        
     }
     
-    @objc
-    private func didTapButton() {
-        let alert = UIAlertController(title: "Пока, пока!", message: "Уверены что хотите выйти?", preferredStyle: .alert)
-        
-        let yesAction = UIAlertAction(title: "Да", style: .default) { _ in
-            self.profileLogoutService.logout()
-            
-            guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
-            let authViewController = UIStoryboard(name: "Main", bundle: .main)
-                .instantiateViewController(withIdentifier: "AuthViewController")
-            window.rootViewController = authViewController
-            
-            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {}, completion: nil)
-        }
-        
-        let noAction = UIAlertAction(title: "Нет", style: .default, handler: nil)
-        
-        alert.addAction(yesAction)
-        alert.addAction(noAction)
-        
-        present(alert, animated: true, completion: nil)
-    }
-    
-    private func updateAvatar() {
+    @MainActor func updateAvatar() {
         guard let profileImageURL = ProfileImageService.shared.avatarURL,
               let url = URL(string: profileImageURL) else { return }
         let processor = RoundCornerImageProcessor(cornerRadius: 61)
         usersAvatar.kf.setImage(with: url, placeholder: UIImage(named: "UsersAvatar"), options: [.processor(processor)])
     }
+    
+    func changeLabels() {
+        usersName.text = profileService.profile?.name
+        usersEmail.text = profileService.profile?.loginName
+        usersText.text = profileService.profile?.bio
+    }
 }
-
