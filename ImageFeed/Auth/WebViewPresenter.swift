@@ -27,26 +27,11 @@ final class WebViewPresenter: WebViewPresenterProtocol {
     init(authHelper: AuthHelperProtocol) {
         self.authHelper = authHelper
     }
-    
     func viewDidLoad() {
-        guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
-            print("URL components not found")
+        guard let request = authHelper.authRequest() else {
+            assertionFailure("Failed to construct authorization URLRequest")
             return
         }
-        
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: Constants.accessKey),
-            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-            URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: Constants.accessScope)
-        ]
-        
-        guard let url = urlComponents.url else {
-            print ("Not fount URL")
-            return
-        }
-        
-        guard let request = authHelper.authRequest() else { return }
         
         view?.load(request: request)
         didUpdateProgressValue(_newValue: 0)
@@ -54,10 +39,10 @@ final class WebViewPresenter: WebViewPresenterProtocol {
     
     func didUpdateProgressValue(_newValue newValue: Double) {
         let newProgressValue = Float(newValue)
-        view?.setProgressValue(_newValue: newProgressValue)
+        view?.setProgressValue(newProgressValue)
         
         let shouldHideProgress = shouldHideProgress(for: newProgressValue)
-        view?.setProgressHidden(_isHidden: shouldHideProgress)
+        view?.setProgressHidden(shouldHideProgress)
     }
     
     func shouldHideProgress(for value: Float) -> Bool {

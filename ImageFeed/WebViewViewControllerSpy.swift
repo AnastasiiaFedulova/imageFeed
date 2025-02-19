@@ -16,17 +16,12 @@ final class WebViewViewControllerSpy: WebViewViewControllerProtocol {
         loadRequestCalled = true
     }
     
-    func setProgressValue(_newValue: Float) {
+    func setProgressValue(_ _newValue: Float) {
         
     }
     
-    func setProgressHidden(_isHidden: Bool) {
+    func setProgressHidden(_ _isHidden: Bool) {
         
     }
     
-    
-    
- 
-    
-
 }

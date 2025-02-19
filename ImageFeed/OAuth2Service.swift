@@ -25,7 +25,7 @@ final class OAuth2TokenStorage {
     
     private init() {}
     
-    private let tokenKey = "Bearer Token"
+    private let tokenKey = "Bearer Token353745"
     
     var token: String? {
         get {

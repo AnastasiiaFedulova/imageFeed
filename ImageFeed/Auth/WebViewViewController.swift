@@ -11,8 +11,8 @@ import WebKit
 public protocol WebViewViewControllerProtocol: AnyObject {
     var presenter: WebViewPresenterProtocol? { get set }
     func load(request: URLRequest)
-    func setProgressValue(_newValue: Float)
-    func setProgressHidden(_isHidden: Bool)
+    func setProgressValue(_ newValue: Float)
+    func setProgressHidden(_ isHidden: Bool)
 }
 
 final class WebViewViewController: UIViewController & WebViewViewControllerProtocol {
@@ -31,6 +31,7 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
         super.viewDidLoad()
         
         webView.navigationDelegate = self
+        webView.accessibilityIdentifier = "UnsplashWebView"
         presenter?.viewDidLoad()
         
         
@@ -47,6 +48,7 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         webView.addObserver(
             self,
             forKeyPath: #keyPath(WKWebView.estimatedProgress),
@@ -55,6 +57,7 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated) 
         webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), context: nil)
     }
     
@@ -71,11 +74,11 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
         }
     }
     
-    func setProgressValue(_newValue newValue: Float) {
+    func setProgressValue(_ newValue: Float) {
         progressView.progress = newValue
     }
     
-    func setProgressHidden(_isHidden isHidden: Bool) {
+    func setProgressHidden(_ isHidden: Bool) {
         progressView.isHidden = isHidden
     }
     

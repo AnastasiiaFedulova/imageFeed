@@ -9,10 +9,16 @@ import UIKit
 import Kingfisher
 import ProgressHUD
 
+public protocol ImagesListViewControllerProtocol {
+    var presenter: ImageFetchServiceProtocole? { get set }
+}
 
-final class ImagesListViewController: UIViewController, ViewControllerProtocol {
-
+final class ImagesListViewController: UIViewController, ViewControllerProtocol & ImagesListViewControllerProtocol{
+    var presenter: ImageFetchServiceProtocole?
+    
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
+    
+    var imageFetchService: ImageFetchServiceProtocole?
     
     private let dateFormatterService = DateFormatterService()
     
@@ -38,6 +44,10 @@ final class ImagesListViewController: UIViewController, ViewControllerProtocol {
             likes = Likes()
         }
         
+        if nil == imageFetchService {
+            imageFetchService = ImageFetchService()
+        }
+        
         NotificationCenter.default
             .addObserver(
                 forName: ImagesListService.didChangeNotification,
@@ -48,24 +58,13 @@ final class ImagesListViewController: UIViewController, ViewControllerProtocol {
                 
                 updateTableViewAnimated()
             }
-        fetchImages()
+        imageFetchService?.fetchImages()
     }
     
-    private func fetchImages() {
-        imageListService.fetchPhotosNextPage() { [weak self] result in
-            switch result {
-            case .success(_):
-                return
-            case .failure(_):
-                let alertModel = AlertModel(title: "Ошибка", message: "Не удалось загрузить изображения.", buttonText: "OK", completion: nil)
-                self?.alertPresenter?.alert(alertData: alertModel)
-            }
-        }
-    }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == photos.count - 1 {
-            fetchImages()
+        if indexPath.row == photos.count - 1 && photos.count > 3 {
+            imageFetchService?.fetchImages()
         }
     }
     
