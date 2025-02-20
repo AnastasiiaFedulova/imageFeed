@@ -27,7 +27,6 @@ final class ProfileService {
         let name: String?
         let loginName: String?
         let bio: String?
-        
     }
     
     private func createRequest(endpoint: String, token: String) -> URLRequest? {

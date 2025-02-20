@@ -141,6 +141,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nj2-uB-h75">
                                 <rect key="frame" x="16" y="758" width="382" height="48"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Authenticate"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="thG-IA-uoK"/>
                                 </constraints>
@@ -184,7 +185,7 @@
         <!--Web View View Controller-->
         <scene sceneID="W5b-v8-wqF">
             <objects>
-                <viewController id="7vv-pl-9V0" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewViewController" id="7vv-pl-9V0" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cei-e5-8Jc" customClass="WebViewViewController">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="886"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -199,11 +200,13 @@
                             </wkWebView>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="XRl-0l-Vaf">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="4"/>
+                                <accessibility key="accessibilityConfiguration" identifier="UnsplashWebView"/>
                                 <color key="progressTintColor" name="YP Black"/>
                             </progressView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="qES-Bz-t6h"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <accessibility key="accessibilityConfiguration" identifier="UnsplashWebView"/>
                         <constraints>
                             <constraint firstItem="1et-N2-XCd" firstAttribute="leading" secondItem="cei-e5-8Jc" secondAttribute="leading" id="1de-ij-4hb"/>
                             <constraint firstItem="qES-Bz-t6h" firstAttribute="trailing" secondItem="XRl-0l-Vaf" secondAttribute="trailing" id="3rJ-CV-A2l"/>
@@ -245,6 +248,7 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OUe-eb-lGe" userLabel="BackButton">
                                 <rect key="frame" x="8" y="8" width="48" height="48"/>
+                                <accessibility key="accessibilityConfiguration" identifier="back_button_white"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="48" id="H6j-OU-uqJ"/>
                                     <constraint firstAttribute="height" constant="48" id="uG8-Ax-bzR"/>
@@ -290,7 +294,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cOf-ef-Yr9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="912" y="625"/>
+            <point key="canvasLocation" x="911.59420289855075" y="624.77678571428567"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="kj3-V7-9bS">

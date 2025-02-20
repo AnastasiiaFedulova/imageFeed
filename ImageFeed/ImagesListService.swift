@@ -112,8 +112,9 @@ final class ImagesListService {
     func fetchPhotosNextPage( completion: @escaping (Result<[Photo], Error>) -> Void) {
         task?.cancel()
         
-        guard let url = URL(string: "https://api.unsplash.com/photos?page=\(getPage())") else {
+        guard let url = URL(string: "https://api.unsplash.com/photos?page=\(getPage())&per_page=5") else {
             return
+            
         }
         guard let token = OAuth2TokenStorage.shared.token else {
             completion(.failure(NSError(domain: "ImagesListService", code: 401, userInfo: [NSLocalizedDescriptionKey: "Unauthorized"])))
@@ -140,6 +141,9 @@ final class ImagesListService {
                     let photo = Photo(id: photoResult.id, size: CGSize(width: Double(photoResult.width), height: Double(photoResult.height)), createdAt: date, welcomeDescription: photoResult.description, thumbImageURL: photoResult.urls.thumb, largeImageURL: photoResult.urls.full, isLiked: photoResult.liked_by_user
                     )
                     self?.photos.append(photo)
+                    
+                    print("Загружено изображений: \(self?.photos.count ?? 0)")
+                    
                     NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: nil)
                 }
                 

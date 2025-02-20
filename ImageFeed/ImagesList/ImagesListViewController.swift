@@ -9,8 +9,20 @@ import UIKit
 import Kingfisher
 import ProgressHUD
 
-final class ImagesListViewController: UIViewController, ViewControllerProtocol {
+public protocol ImagesListViewControllerProtocol {
+    var presenter: ImageFetchServiceProtocole? { get set }
+}
+
+final class ImagesListViewController: UIViewController, ViewControllerProtocol & ImagesListViewControllerProtocol{
+    var presenter: ImageFetchServiceProtocole?
+    
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
+    
+    var imageFetchService: ImageFetchServiceProtocole?
+    
+    private let dateFormatterService = DateFormatterService()
+    
+    var likes: LikesProtocol?
     
     @IBOutlet private var tableView: UITableView!
     
@@ -20,13 +32,6 @@ final class ImagesListViewController: UIViewController, ViewControllerProtocol {
     
     private var alertPresenter: AlertPresenter?
     
-    private lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        return formatter
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -35,6 +40,13 @@ final class ImagesListViewController: UIViewController, ViewControllerProtocol {
         alertPresenter = AlertPresenter()
         alertPresenter?.setup(delegate: self)
         
+        if nil == likes {
+            likes = Likes()
+        }
+        
+        if nil == imageFetchService {
+            imageFetchService = ImageFetchService()
+        }
         
         NotificationCenter.default
             .addObserver(
@@ -46,24 +58,13 @@ final class ImagesListViewController: UIViewController, ViewControllerProtocol {
                 
                 updateTableViewAnimated()
             }
-        fetchImages()
+        imageFetchService?.fetchImages()
     }
     
-    private func fetchImages() {
-        imageListService.fetchPhotosNextPage() { [weak self] result in
-            switch result {
-            case .success(let photos):
-                return
-            case .failure(_):
-                let alertModel = AlertModel(title: "Ошибка", message: "Не удалось загрузить изображения.", buttonText: "OK", completion: nil)
-                self?.alertPresenter?.alert(alertData: alertModel)
-            }
-        }
-    }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == photos.count - 1 {
-            fetchImages()
+        if indexPath.row == photos.count - 1 && photos.count > 3 {
+            imageFetchService?.fetchImages()
         }
     }
     
@@ -126,7 +127,6 @@ extension ImagesListViewController: UITableViewDataSource {
         
         return imageListCell
     }
-    
 }
 
 extension ImagesListViewController: ImagesListCellDelegate {
@@ -135,28 +135,22 @@ extension ImagesListViewController: ImagesListCellDelegate {
         let photo = photos[indexPath.row]
         
         UIBlockingProgressHUD.show()
-        let isPhotoLiked = !photo.isLiked
         
-        imageListService.changeLike(photoId: photo.id, isLike: isPhotoLiked) { [weak self] result in
+        likes?.tapLike(for: photo) { [weak self] result in
             DispatchQueue.main.async {
+                UIBlockingProgressHUD.dismiss()
                 switch result {
-                case .success:
-                    guard let self = self else { return }
-                    
-                    if let index = self.photos.firstIndex(where: { $0.id == photo.id }) {
-                        self.photos[index].isLiked = isPhotoLiked
-                    }
-                    
-                    cell.setIsLiked(isLiked: isPhotoLiked)
-                    UIBlockingProgressHUD.dismiss()
+                case .success(let isLiked):
+                    self?.photos[indexPath.row].isLiked = isLiked
+                    cell.setIsLiked(isLiked: isLiked)
                 case .failure:
-                    print("Error")
-                    UIBlockingProgressHUD.dismiss()
+                    print("Error changing like state")
                 }
             }
         }
     }
 }
+
 
 extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
@@ -187,13 +181,14 @@ extension ImagesListViewController {
                 }
             }
             
-            cell.dateLabel.text = dateFormatter.string(from: Date())
+            cell.dateLabel.text = dateFormatterService.formatDate(Date())
             
             let likeImage = UIImage(named: photo.isLiked ? "Active" : "NoActive")
             cell.likeButton.setImage(likeImage, for: .normal)
         }
     }
 }
+
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
@@ -203,15 +198,12 @@ extension ImagesListViewController: UITableViewDelegate {
         let photo = photos[indexPath.row]
         _ = URL(string: photo.largeImageURL)
         
-        
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
         let imageWidth = photo.size.width
         let scale = imageViewWidth / imageWidth
         let cellHeight = photo.size.height * scale + imageInsets.top + imageInsets.bottom
         return cellHeight
-        
     }
-    
 }
 
